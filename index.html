@@ -70,11 +70,15 @@
                     <input type="text" id="busquedaInput" oninput="filtrarComponentes()" placeholder="🔍 Buscar por nombre o código" class="w-full p-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500">
                 </div>
 
-                <div class="flex-1 flex flex-col min-h-0">
-                    <div class="flex justify-between items-center mb-2">
-                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">2. Seleccionar Opciones / Sondas</label>
-                        <span id="contadorItems" class="text-xs text-slate-400">0 disponibles</span>
-                    </div>
+            <div class="flex justify-between items-center mb-2">
+                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">2. Seleccionar Opciones / Sondas</label>
+                <div class="flex items-center space-x-2">
+                    <button onclick="limpiarSeleccion()" class="text-[11px] text-red-600 hover:text-red-700 font-semibold bg-red-50 hover:bg-red-100 px-2 py-0.5 rounded transition-all">
+                        🗑️ Limpiar
+                    </button>
+                    <span id="contadorItems" class="text-xs text-slate-400">0 disponibles</span>
+                </div>
+            </div>
                     
                     <div id="listaCheckboxes" class="space-y-2 flex-1 overflow-y-auto pr-1 border border-slate-100 p-2 rounded-xl bg-slate-50">
                         <!-- Checkboxes dinámicos -->
@@ -136,6 +140,12 @@
     </div>
 
     <script>
+
+        function limpiarSeleccion() {
+            seleccionados = []; // Vacía el array de seleccionados
+            renderTabla();      // Actualiza la tabla (quedará en 0)
+            renderListaCheckboxes(); // Actualiza los checkboxes visualmente
+        }
         // Enlaces directos a tus archivos PDF en GitHub (reemplaza .docx por .pdf en los nombres)
         const documentosPDF = {
                     "Arietta 50": "https://fsbastidas.github.io/ULTRASOUND-FJ/Cotización ARIETTA 50.pdf#toolbar=0&view=FitH",
