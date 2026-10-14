@@ -11,7 +11,7 @@
 </head>
 <body class="bg-slate-100 min-h-screen p-3 md:p-6 font-sans">
 
-    <div class="max-w-[1600px] mx-auto space-y-6">
+    <div class="max-w-[1700px] mx-auto space-y-6">
         
         <!-- Encabezado Principal -->
         <header class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -25,9 +25,9 @@
             
             <!-- Controles Superiores: Toggle PVP -->
             <div class="flex items-center space-x-4 bg-slate-50 p-3 rounded-xl border border-slate-200">
-                <span class="text-xs md:text-sm font-semibold text-slate-700">Mostrar PVP en la tabla y propuesta</span>
+                <span class="text-xs md:text-sm font-semibold text-slate-700">Mostrar PVP en la tabla comercial</span>
                 <label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" id="togglePVP" class="sr-only peer" checked onchange="actualizarTodo()">
+                    <input type="checkbox" id="togglePVP" class="sr-only peer" checked onchange="renderTabla()">
                     <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
             </div>
@@ -36,52 +36,18 @@
         <!-- Layout de 3 Columnas -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
-            <!-- COLUMNA 1 (Izquierda): Vista Previa del Documento Word -->
+            <!-- COLUMNA 1 (Izquierda): Visor del Documento Word -->
             <div class="lg:col-span-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col h-[780px]">
                 <div class="flex justify-between items-center pb-3 border-b border-slate-100 mb-3">
-                    <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider">📄 Vista Previa Cotización Word</h2>
-                    <span class="bg-blue-50 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded">Plantilla Activa</span>
+                    <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider">📄 Documento Word de Cotización</h2>
+                    <span class="bg-blue-50 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded">Vista Previa</span>
                 </div>
 
-                <!-- Simulación Hoja Word Estilizada -->
-                <div class="flex-1 overflow-y-auto bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4 text-xs text-slate-700 font-sans shadow-inner">
-                    <div class="text-center font-bold text-slate-900 border-b pb-2">
-                        PROPUESTA COMERCIAL FUJIFILM
-                    </div>
-                    <div class="space-y-1 text-[11px] text-slate-600">
-                        <p><strong>Cotización No.:</strong> PERF-2026-001</p>
-                        <p><strong>Fecha:</strong> <span id="docFecha">14/10/2026</span></p>
-                        <p><strong>Equipo:</strong> <span id="docModeloTitulo" class="font-bold text-blue-600">Arietta 50</span></p>
-                    </div>
-                    
-                    <p class="text-[11px] leading-relaxed text-slate-600">
-                        Estimado cliente, agradecemos su interés en adquirir tecnología FUJIFILM. A continuación se detalla la configuración seleccionada:
-                    </p>
-
-                    <!-- Mini Tabla resumen en el Word -->
-                    <div class="border rounded bg-white overflow-hidden">
-                        <table class="w-full text-[10px]">
-                            <thead class="bg-slate-100 border-b">
-                                <tr>
-                                    <th class="p-1.5 text-left">Ítem / Descripción</th>
-                                    <th class="p-1.5 text-right doc-pvp-col">PVP</th>
-                                </tr>
-                            </thead>
-                            <tbody id="docTablaBody" class="divide-y divide-slate-100">
-                                <!-- Dinámico -->
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div id="docTotalContenedor" class="text-right font-bold text-slate-900 pt-1 text-[11px]">
-                        Total: <span id="docTotalTexto" class="text-blue-600">$0.00</span>
-                    </div>
-
-                    <div class="pt-2 border-t text-[10px] text-slate-500">
-                        <p><strong>Garantía:</strong> 12 meses por defectos de fábrica.</p>
-                        <p><strong>Validez:</strong> 30 días.</p>
-                    </div>
+                <!-- Visor iframe para mostrar el documento Word (reemplaza la URL de abajo con el enlace público de tu documento en OneDrive, Google Drive o GitHub) -->
+                <div class="flex-1 overflow-hidden rounded-xl border border-slate-200 bg-slate-50">
+                    <iframe id="wordViewer" src="https://view.officeapps.live.com/op/embed.aspx?src=TU_ENLACE_PUBLICO_DEL_DOCX" class="w-full h-full border-0"></iframe>
                 </div>
+                <p class="text-[10px] text-slate-400 mt-2 text-center">Nota: Para ver tu archivo en línea, sube tu `.docx` a un enlace público (OneDrive/GitHub) y colócalo en el código.</p>
             </div>
 
             <!-- COLUMNA 2 (Centro): Selección y Filtros -->
@@ -216,7 +182,6 @@
             ]
         };
 
-        // Copiar modelos restantes para mantener compatibilidad
         ["Arietta 650 DI", "Arietta 750 DI", "Arietta 850 DI"].forEach(m => {
             baseDeDatos[m] = baseDeDatos["Arietta 50"];
         });
@@ -226,13 +191,12 @@
         function cargarComponentes() {
             const modelo = document.getElementById("selectModelo").value;
             document.getElementById("subtituloModelo").textContent = "Modelo: " + modelo;
-            document.getElementById("docModeloTitulo").textContent = modelo;
             
             const items = baseDeDatos[modelo] || [];
             seleccionados = items.slice(0, 3).map(i => i.id);
 
             renderListaCheckboxes();
-            actualizarTodo();
+            renderTabla();
         }
 
         function renderListaCheckboxes() {
@@ -278,12 +242,7 @@
             } else {
                 seleccionados.push(id);
             }
-            actualizarTodo();
-        }
-
-        function actualizarTodo() {
             renderTabla();
-            renderVistaPreviaWord();
         }
 
         function renderTabla() {
@@ -333,44 +292,6 @@
             } else {
                 foot.innerHTML = `<span class="text-xs text-slate-400">Configuración sin precios visibles</span>`;
             }
-        }
-
-        function renderVistaPreviaWord() {
-            const modelo = document.getElementById("selectModelo").value;
-            const mostrarPVP = document.getElementById("togglePVP").checked;
-            const todosLosItems = baseDeDatos[modelo] || [];
-            const items = todosLosItems.filter(i => seleccionados.includes(i.id));
-
-            const docBody = document.getElementById("docTablaBody");
-            const docContenedorTotal = document.getElementById("docTotalContenedor");
-            const docTextoTotal = document.getElementById("docTotalTexto");
-
-            docBody.innerHTML = "";
-            let total = 0;
-
-            document.querySelectorAll('.doc-pvp-col').forEach(el => {
-                if(mostrarPVP) el.classList.remove('hidden'); else el.classList.add('hidden');
-            });
-
-            if (items.length === 0) {
-                docBody.innerHTML = `<tr><td colspan="2" class="p-2 text-center text-slate-400 text-[10px]">Sin ítems seleccionados</td></tr>`;
-                docContenedorTotal.classList.add('hidden');
-                return;
-            }
-
-            docContenedorTotal.classList.remove('hidden');
-
-            items.forEach(item => {
-                total += item.pvp;
-                const tr = document.createElement("tr");
-                tr.innerHTML = `
-                    <td class="p-1.5">${item.nombre}</td>
-                    ${mostrarPVP ? `<td class="p-1.5 text-right font-mono">$${item.pvp.toLocaleString()}</td>` : ''}
-                `;
-                docBody.appendChild(tr);
-            });
-
-            docTextoTotal.textContent = `$ ${total.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
         }
 
         function exportarExcel() {
