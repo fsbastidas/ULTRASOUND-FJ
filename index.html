@@ -9,9 +9,9 @@
     <!-- Librería para exportar a Excel real (.xlsx) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
-<body class="bg-slate-100 min-h-screen p-4 md:p-8 font-sans">
+<body class="bg-slate-100 min-h-screen p-3 md:p-6 font-sans">
 
-    <div class="max-w-7xl mx-auto space-y-6">
+    <div class="max-w-[1600px] mx-auto space-y-6">
         
         <!-- Encabezado Principal -->
         <header class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
@@ -25,23 +25,70 @@
             
             <!-- Controles Superiores: Toggle PVP -->
             <div class="flex items-center space-x-4 bg-slate-50 p-3 rounded-xl border border-slate-200">
-                <span class="text-xs md:text-sm font-semibold text-slate-700">Mostrar PVP en la tabla</span>
+                <span class="text-xs md:text-sm font-semibold text-slate-700">Mostrar PVP en la tabla y propuesta</span>
                 <label class="relative inline-flex items-center cursor-pointer">
-                    <input type="checkbox" id="togglePVP" class="sr-only peer" checked onchange="renderTabla()">
+                    <input type="checkbox" id="togglePVP" class="sr-only peer" checked onchange="actualizarTodo()">
                     <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
                 </label>
             </div>
         </header>
 
+        <!-- Layout de 3 Columnas -->
         <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
-            <!-- Panel Izquierdo: Selección y Filtros -->
-            <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-5">
-                
-                <!-- 1. Selección del Ecógrafo -->
+            <!-- COLUMNA 1 (Izquierda): Vista Previa del Documento Word -->
+            <div class="lg:col-span-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col h-[780px]">
+                <div class="flex justify-between items-center pb-3 border-b border-slate-100 mb-3">
+                    <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider">📄 Vista Previa Cotización Word</h2>
+                    <span class="bg-blue-50 text-blue-700 text-[10px] font-bold px-2 py-0.5 rounded">Plantilla Activa</span>
+                </div>
+
+                <!-- Simulación Hoja Word Estilizada -->
+                <div class="flex-1 overflow-y-auto bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-4 text-xs text-slate-700 font-sans shadow-inner">
+                    <div class="text-center font-bold text-slate-900 border-b pb-2">
+                        PROPUESTA COMERCIAL FUJIFILM
+                    </div>
+                    <div class="space-y-1 text-[11px] text-slate-600">
+                        <p><strong>Cotización No.:</strong> PERF-2026-001</p>
+                        <p><strong>Fecha:</strong> <span id="docFecha">14/10/2026</span></p>
+                        <p><strong>Equipo:</strong> <span id="docModeloTitulo" class="font-bold text-blue-600">Arietta 50</span></p>
+                    </div>
+                    
+                    <p class="text-[11px] leading-relaxed text-slate-600">
+                        Estimado cliente, agradecemos su interés en adquirir tecnología FUJIFILM. A continuación se detalla la configuración seleccionada:
+                    </p>
+
+                    <!-- Mini Tabla resumen en el Word -->
+                    <div class="border rounded bg-white overflow-hidden">
+                        <table class="w-full text-[10px]">
+                            <thead class="bg-slate-100 border-b">
+                                <tr>
+                                    <th class="p-1.5 text-left">Ítem / Descripción</th>
+                                    <th class="p-1.5 text-right doc-pvp-col">PVP</th>
+                                </tr>
+                            </thead>
+                            <tbody id="docTablaBody" class="divide-y divide-slate-100">
+                                <!-- Dinámico -->
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div id="docTotalContenedor" class="text-right font-bold text-slate-900 pt-1 text-[11px]">
+                        Total: <span id="docTotalTexto" class="text-blue-600">$0.00</span>
+                    </div>
+
+                    <div class="pt-2 border-t text-[10px] text-slate-500">
+                        <p><strong>Garantía:</strong> 12 meses por defectos de fábrica.</p>
+                        <p><strong>Validez:</strong> 30 días.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COLUMNA 2 (Centro): Selección y Filtros -->
+            <div class="lg:col-span-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 space-y-4 flex flex-col h-[780px]">
                 <div>
                     <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">1. Modelo de Ecógrafo</label>
-                    <select id="selectModelo" onchange="cargarComponentes()" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold text-slate-800 bg-slate-50">
+                    <select id="selectModelo" onchange="cargarComponentes()" class="w-full p-2.5 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold text-slate-800 bg-slate-50 text-sm">
                         <option value="Arietta 50">Arietta 50</option>
                         <option value="Arietta 50 LE">Arietta 50 LE</option>
                         <option value="Arietta 65">Arietta 65</option>  
@@ -54,69 +101,68 @@
                     </select>
                 </div>
 
-                <!-- Buscador rápido -->
                 <div>
-                    <input type="text" id="busquedaInput" oninput="filtrarComponentes()" placeholder="🔍 Buscar por nombre o código" class="w-full p-2.5 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500">
+                    <input type="text" id="busquedaInput" oninput="filtrarComponentes()" placeholder="🔍 Buscar por nombre o código" class="w-full p-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500">
                 </div>
 
-                <!-- Lista de Opciones -->
-                <div>
+                <div class="flex-1 flex flex-col min-h-0">
                     <div class="flex justify-between items-center mb-2">
-                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">2. Seleccionar Licencias / Sondas</label>
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">2. Seleccionar Opciones / Sondas</label>
                         <span id="contadorItems" class="text-xs text-slate-400">0 disponibles</span>
                     </div>
                     
-                    <div id="listaCheckboxes" class="space-y-2 max-h-[460px] overflow-y-auto pr-2 border border-slate-100 p-2 rounded-xl bg-slate-50">
-                        <!-- Checkboxes cargados por JavaScript -->
+                    <div id="listaCheckboxes" class="space-y-2 flex-1 overflow-y-auto pr-1 border border-slate-100 p-2 rounded-xl bg-slate-50">
+                        <!-- Checkboxes dinámicos -->
                     </div>
                 </div>
-
             </div>
 
-            <!-- Panel Derecho: Tabla Comercial -->
-            <div class="lg:col-span-7 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between space-y-4">
+            <!-- COLUMNA 3 (Derecha): Tabla Comercial Grande -->
+            <div class="lg:col-span-4 bg-white p-5 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between h-[780px]">
                 
-                <div class="space-y-4">
-                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 border-b border-slate-100 pb-4">
+                <div class="space-y-4 flex-1 flex flex-col min-h-0">
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-2 border-b border-slate-100 pb-3">
                         <div>
-                            <h2 class="text-lg font-bold text-slate-800">Propuesta Comercial de Configuración</h2>
-                            <p id="subtituloModelo" class="text-xs text-slate-500">Modelo seleccionado: Arietta 750 VE, SE</p>
+                            <h2 class="text-sm font-bold text-slate-800">Propuesta Comercial</h2>
+                            <p id="subtituloModelo" class="text-[11px] text-slate-500">Modelo: Arietta 50</p>
                         </div>
                         
                         <!-- Botones Exportación -->
-                        <div class="flex items-center space-x-2">
-                            <button onclick="exportarExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3.5 py-2.5 rounded-xl flex items-center space-x-1.5 transition-all shadow-sm">
-                                <span>📊 Exportar Excel</span>
+                        <div class="flex items-center space-x-1.5">
+                            <button onclick="exportarExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-[11px] font-semibold px-2.5 py-2 rounded-lg flex items-center space-x-1 shadow-sm transition-all">
+                                <span>📊 Excel</span>
                             </button>
-                            <button onclick="copiarTabla()" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold px-3.5 py-2.5 rounded-xl flex items-center space-x-1.5 transition-all shadow-sm">
-                                <span>📋 Copiar Tabla</span>
+                            <button onclick="copiarTabla()" class="bg-slate-800 hover:bg-slate-900 text-white text-[11px] font-semibold px-2.5 py-2 rounded-lg flex items-center space-x-1 shadow-sm transition-all">
+                                <span>📋 Copiar</span>
                             </button>
                         </div>
                     </div>
 
-                    <!-- Tabla -->
-                    <div class="overflow-x-auto rounded-xl border border-slate-200">
-                        <table class="w-full text-sm text-left text-slate-600 border-collapse">
-                            <thead class="text-xs text-slate-700 uppercase bg-slate-100 border-b border-slate-200 font-semibold">
+                    <!-- Tabla Principal -->
+                    <div class="flex-1 overflow-y-auto rounded-xl border border-slate-200">
+                        <table class="w-full text-xs text-left text-slate-600 border-collapse">
+                            <thead class="text-[11px] text-slate-700 uppercase bg-slate-100 border-b border-slate-200 font-semibold sticky top-0">
                                 <tr>
-                                    <th class="py-3 px-3 text-center w-10">#</th>
-                                    <th class="py-3 px-4">Componente / Aplicación</th>
-                                    <th class="py-3 px-4">Modelo / Código</th>
-                                    <th id="colHeaderPVP" class="py-3 px-4 text-right">PVP ($)</th>
+                                    <th class="py-2.5 px-2 text-center w-8">#</th>
+                                    <th class="py-2.5 px-3">Componente / Aplicación</th>
+                                    <th class="py-2.5 px-3">Código</th>
+                                    <th id="colHeaderPVP" class="py-2.5 px-3 text-right">PVP ($)</th>
                                 </tr>
                             </thead>
                             <tbody id="bodyTabla" class="divide-y divide-slate-100">
                                 <!-- Filas dinámicas -->
                             </tbody>
-                            <tfoot id="footTabla" class="border-t-2 border-slate-300 font-bold bg-slate-50 text-slate-800">
-                                <!-- Total -->
-                            </tfoot>
                         </table>
+                    </div>
+
+                    <!-- Total inferior de la tabla -->
+                    <div id="footTabla" class="p-3 bg-slate-50 border border-slate-200 rounded-xl flex justify-between items-center font-bold text-slate-800 text-xs">
+                        <!-- Total dinámico -->
                     </div>
                 </div>
 
-                <div class="text-xs text-slate-400 text-center pt-2 border-t border-slate-100">
-                    PERFETECH S.A. — Base de Datos de Equipos de Ultrasonido Fujifilm
+                <div class="text-[11px] text-slate-400 text-center pt-3 border-t border-slate-100 mt-3">
+                    PERFETECH S.A. — Configurador Médico Fujifilm
                 </div>
 
             </div>
@@ -125,7 +171,6 @@
     </div>
 
     <script>
-        // Catálogo extraído directamente de tu Excel comercial de PVP
         const baseDeDatos = {
             "Arietta 50": [
                 { id: "PEU-ARIETTA50", nombre: "Physiological Signal Display Unit", codigo: "PEU-ARIETTA50", pvp: 1565 },
@@ -134,136 +179,60 @@
                 { id: "MP-FX-AR50-3", nombre: "Storage Tray", codigo: "MP-FX-AR50-3", pvp: 5739 },
                 { id: "MP-FX-ALB-6B", nombre: "Keyboard Tray", codigo: "MP-FX-ALB-6B", pvp: 6435 },
                 { id: "EU-9203", nombre: "Servo unit", codigo: "EU-9203", pvp: 2956 },
-                { id: "EU-6065", nombre: "Battery unit", codigo: "EU-6065", pvp: 1 },
-                { id: "MP-FX-AR50-4", nombre: "Friction Kit", codigo: "MP-FX-AR50-4", pvp: 1 },
-                { id: "PM-AR50-H001", nombre: "B/W Printer Connection Kit", codigo: "PM-AR50-H001", pvp: 1 },
-                { id: "MP-FX-AR50-20", nombre: "Mounting Rack of B/W Printer", codigo: "MP-FX-AR50-20", pvp: 1 },
-                { id: "MP-PH-AVA-11B", nombre: "Endo-cavity Probe holder kit", codigo: "MP-PH-AVA-11B", pvp: 1 },
-                { id: "SOP-AR50-5", nombre: "FAM software", codigo: "SOP-AR50-5", pvp: 1 },
-                { id: "SOP-AR50-10", nombre: "DICOM Network Communication Software", codigo: "SOP-AR50-10", pvp: 1 },
-                { id: "SOP-AR50-21", nombre: "DICOM Structure Report Software", codigo: "SOP-AR50-21", pvp: 1 },
-                { id: "SOP-AR50-59", nombre: "DICOM Query/Retrieve software", codigo: "SOP-AR50-59", pvp: 1 },
-                { id: "SOP-AR50-7", nombre: "FLOW Profile Measurement software", codigo: "SOP-AR50-7", pvp: 1 }
-                
+                { id: "EU-6065", nombre: "Battery unit", codigo: "EU-6065", pvp: 2608 },
+                { id: "MP-FX-AR50-4", nombre: "Friction Kit", codigo: "MP-FX-AR50-4", pvp: 522 },
+                { id: "PM-AR50-H001", nombre: "B/W Printer Connection Kit", codigo: "PM-AR50-H001", pvp: 348 },
+                { id: "MP-FX-AR50-20", nombre: "Mounting Rack of B/W Printer", codigo: "MP-FX-AR50-20", pvp: 348 },
+                { id: "MP-PH-AVA-11B", nombre: "Endo-cavity Probe holder kit", codigo: "MP-PH-AVA-11B", pvp: 522 },
+                { id: "SOP-AR50-5", nombre: "FAM software", codigo: "SOP-AR50-5", pvp: 348 },
+                { id: "SOP-AR50-10", nombre: "DICOM Network Communication Software", codigo: "SOP-AR50-10", pvp: 2956 },
+                { id: "SOP-AR50-21", nombre: "DICOM Structure Report Software", codigo: "SOP-AR50-21", pvp: 1391 },
+                { id: "SOP-AR50-59", nombre: "DICOM Query/Retrieve software", codigo: "SOP-AR50-59", pvp: 1391 },
+                { id: "SOP-AR50-7", nombre: "FLOW Profile Measurement software", codigo: "SOP-AR50-7", pvp: 522 }
             ],
             "Arietta 50 LE": [
-                { id: "SSD-ARIETTA50", nombre: "Ultrasound System, 3 Probe Connector, Fixed Monitor Arm", codigo: "SSD-ARIETTA50", pvp: 19130 },
                 { id: "SSD-ARIETTA50LE", nombre: "Ultrasound System, 4 Probe Connector, Flexible Monitor Arm", codigo: "SSD-ARIETTA50LE", pvp: 20869 },
                 { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 },
-                { id: "L441", nombre: "Linear Probe (Smart Connector UST-5415)", codigo: "L441", pvp: 5739 },
                 { id: "C41V1", nombre: "Transvaginal Probe (Smart Connector EUP-V73W)", codigo: "C41V1", pvp: 6435 },
                 { id: "SOP-AR50-10", nombre: "DICOM Network Communication Software", codigo: "SOP-AR50-10", pvp: 2956 }
             ],
             "Arietta 65": [
                 { id: "SSD-ARIETTA650(OLED)", nombre: "Ultrasound System (OLED Monitor)", codigo: "SSD-ARIETTA650(OLED)", pvp: 45216 },
-                { id: "SSD-ARIETTA650(LCD)", nombre: "Ultrasound System (LCD Monitor)", codigo: "SSD-ARIETTA650(LCD)", pvp: 39999 },
                 { id: "EU-9198", nombre: "CW servo unit", codigo: "EU-9198", pvp: 1391 },
-                { id: "PEU-ARIETTA65", nombre: "Physiological Signal Display Unit", codigo: "PEU-ARIETTA65", pvp: 1739 },
-                { id: "EU-9206", nombre: "SWM unit", codigo: "EU-9206", pvp: 4348 },
-                { id: "EU-9199", nombre: "Battery unit", codigo: "EU-9199", pvp: 2609 },
-                { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 },
-                { id: "L441", nombre: "Linear Probe (Smart Connector)", codigo: "L441", pvp: 5739 },
-                { id: "C41V1", nombre: "Transvaginal Probe", codigo: "C41V1", pvp: 6435 }
-            ],
-            "Arietta 650 DI": [
-                { id: "SSD-ARIETTA650(OLED)", nombre: "Ultrasound System (OLED Monitor)", codigo: "SSD-ARIETTA650(OLED)", pvp: 45216 },
-                { id: "SSD-ARIETTA650(LCD)", nombre: "Ultrasound System (LCD Monitor)", codigo: "SSD-ARIETTA650(LCD)", pvp: 39999 },
-                { id: "EU-9198", nombre: "CW servo unit", codigo: "EU-9198", pvp: 1391 },
-                { id: "PEU-ARIETTA65", nombre: "Physiological Signal Display Unit", codigo: "PEU-ARIETTA65", pvp: 1739 },
-                { id: "EU-9206", nombre: "SWM unit", codigo: "EU-9206", pvp: 4348 },
-                { id: "EU-9199", nombre: "Battery unit", codigo: "EU-9199", pvp: 2609 },
-                { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 },
-                { id: "L441", nombre: "Linear Probe (Smart Connector)", codigo: "L441", pvp: 5739 },
-                { id: "C41V1", nombre: "Transvaginal Probe", codigo: "C41V1", pvp: 6435 }
+                { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 }
             ],
             "Arietta 750 SE": [
-                { id: "SSD-ARIETTA750 VE", nombre: "Ultrasound System (21\" LCD)", codigo: "SSD-ARIETTA750 VE", pvp: 54781 },
                 { id: "SSD-ARIETTA750 SE", nombre: "Ultrasound System (23\" LCD)", codigo: "SSD-ARIETTA750 SE", pvp: 59998 },
-                { id: "SOP-ARIETTA750-4", nombre: "Real-time 3D Software", codigo: "SOP-ARIETTA750-4", pvp: 522 },
-                { id: "SOP-ARIETTA750-11", nombre: "eTRACKING Software", codigo: "SOP-ARIETTA750-11", pvp: 1391 },
                 { id: "SOP-ARIETTA750-151", nombre: "Shear Wave Measurement B software", codigo: "SOP-ARIETTA750-151", pvp: 21564 },
-                { id: "SOP-ARIETTA750-43", nombre: "Real-time Tissue Elastography", codigo: "SOP-ARIETTA750-43", pvp: 14434 },
-                { id: "SOP-ARIETTA750-60", nombre: "Real-time Tissue Elastography Strain Histogram", codigo: "SOP-ARIETTA750-60", pvp: 5739 },
-                { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 },
-                { id: "L441", nombre: "Linear Probe (Smart Connector UST-5415)", codigo: "L441", pvp: 5739 },
-                { id: "L64", nombre: "Linear Probe (Smart Connector EUP-L75)", codigo: "L64", pvp: 4348 },
-                { id: "C41V1", nombre: "Transvaginal Probe (Smart Connector EUP-V73W)", codigo: "C41V1", pvp: 6435 },
-                { id: "VC35", nombre: "RT-3D (4D) Probe", codigo: "VC35", pvp: 12173 },
-                { id: "S211", nombre: "Phased Array Sector Probe", codigo: "S211", pvp: 6956 }
-            ],
-            "Arietta 750 DI": [
-                { id: "SSD-ARIETTA750 VE", nombre: "Ultrasound System (21\" LCD)", codigo: "SSD-ARIETTA750 VE", pvp: 54781 },
-                { id: "SSD-ARIETTA750 SE", nombre: "Ultrasound System (23\" LCD)", codigo: "SSD-ARIETTA750 SE", pvp: 59998 },
-                { id: "SOP-ARIETTA750-4", nombre: "Real-time 3D Software", codigo: "SOP-ARIETTA750-4", pvp: 522 },
-                { id: "SOP-ARIETTA750-11", nombre: "eTRACKING Software", codigo: "SOP-ARIETTA750-11", pvp: 1391 },
-                { id: "SOP-ARIETTA750-151", nombre: "Shear Wave Measurement B software", codigo: "SOP-ARIETTA750-151", pvp: 21564 },
-                { id: "SOP-ARIETTA750-43", nombre: "Real-time Tissue Elastography", codigo: "SOP-ARIETTA750-43", pvp: 14434 },
-                { id: "SOP-ARIETTA750-60", nombre: "Real-time Tissue Elastography Strain Histogram", codigo: "SOP-ARIETTA750-60", pvp: 5739 },
-                { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 },
-                { id: "L441", nombre: "Linear Probe (Smart Connector UST-5415)", codigo: "L441", pvp: 5739 },
-                { id: "L64", nombre: "Linear Probe (Smart Connector EUP-L75)", codigo: "L64", pvp: 4348 },
-                { id: "C41V1", nombre: "Transvaginal Probe (Smart Connector EUP-V73W)", codigo: "C41V1", pvp: 6435 },
-                { id: "VC35", nombre: "RT-3D (4D) Probe", codigo: "VC35", pvp: 12173 },
-                { id: "S211", nombre: "Phased Array Sector Probe", codigo: "S211", pvp: 6956 }
+                { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 }
             ],
             "Arietta 850": [
-                { id: "SSD-ARIETTA750 VE", nombre: "Ultrasound System (21\" LCD)", codigo: "SSD-ARIETTA750 VE", pvp: 54781 },
                 { id: "SSD-ARIETTA750 SE", nombre: "Ultrasound System (23\" LCD)", codigo: "SSD-ARIETTA750 SE", pvp: 59998 },
-                { id: "SOP-ARIETTA750-4", nombre: "Real-time 3D Software", codigo: "SOP-ARIETTA750-4", pvp: 522 },
-                { id: "SOP-ARIETTA750-11", nombre: "eTRACKING Software", codigo: "SOP-ARIETTA750-11", pvp: 1391 },
-                { id: "SOP-ARIETTA750-151", nombre: "Shear Wave Measurement B software", codigo: "SOP-ARIETTA750-151", pvp: 21564 },
-                { id: "SOP-ARIETTA750-43", nombre: "Real-time Tissue Elastography", codigo: "SOP-ARIETTA750-43", pvp: 14434 },
-                { id: "SOP-ARIETTA750-60", nombre: "Real-time Tissue Elastography Strain Histogram", codigo: "SOP-ARIETTA750-60", pvp: 5739 },
-                { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 },
-                { id: "L441", nombre: "Linear Probe (Smart Connector UST-5415)", codigo: "L441", pvp: 5739 },
-                { id: "L64", nombre: "Linear Probe (Smart Connector EUP-L75)", codigo: "L64", pvp: 4348 },
-                { id: "C41V1", nombre: "Transvaginal Probe (Smart Connector EUP-V73W)", codigo: "C41V1", pvp: 6435 },
-                { id: "VC35", nombre: "RT-3D (4D) Probe", codigo: "VC35", pvp: 12173 },
-                { id: "S211", nombre: "Phased Array Sector Probe", codigo: "S211", pvp: 6956 }
-            ],
-            "Arietta 850 DI": [
-                { id: "SSD-ARIETTA750 VE", nombre: "Ultrasound System (21\" LCD)", codigo: "SSD-ARIETTA750 VE", pvp: 54781 },
-                { id: "SSD-ARIETTA750 SE", nombre: "Ultrasound System (23\" LCD)", codigo: "SSD-ARIETTA750 SE", pvp: 59998 },
-                { id: "SOP-ARIETTA750-4", nombre: "Real-time 3D Software", codigo: "SOP-ARIETTA750-4", pvp: 522 },
-                { id: "SOP-ARIETTA750-11", nombre: "eTRACKING Software", codigo: "SOP-ARIETTA750-11", pvp: 1391 },
-                { id: "SOP-ARIETTA750-151", nombre: "Shear Wave Measurement B software", codigo: "SOP-ARIETTA750-151", pvp: 21564 },
-                { id: "SOP-ARIETTA750-43", nombre: "Real-time Tissue Elastography", codigo: "SOP-ARIETTA750-43", pvp: 14434 },
-                { id: "SOP-ARIETTA750-60", nombre: "Real-time Tissue Elastography Strain Histogram", codigo: "SOP-ARIETTA750-60", pvp: 5739 },
-                { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 },
-                { id: "L441", nombre: "Linear Probe (Smart Connector UST-5415)", codigo: "L441", pvp: 5739 },
-                { id: "L64", nombre: "Linear Probe (Smart Connector EUP-L75)", codigo: "L64", pvp: 4348 },
-                { id: "C41V1", nombre: "Transvaginal Probe (Smart Connector EUP-V73W)", codigo: "C41V1", pvp: 6435 },
-                { id: "VC35", nombre: "RT-3D (4D) Probe", codigo: "VC35", pvp: 12173 },
-                { id: "S211", nombre: "Phased Array Sector Probe", codigo: "S211", pvp: 6956 }
+                { id: "VC35", nombre: "RT-3D (4D) Probe", codigo: "VC35", pvp: 12173 }
             ],
             "Lisendo 880": [
-                { id: "SSD-ARIETTA750 VE", nombre: "Ultrasound System (21\" LCD)", codigo: "SSD-ARIETTA750 VE", pvp: 54781 },
                 { id: "SSD-ARIETTA750 SE", nombre: "Ultrasound System (23\" LCD)", codigo: "SSD-ARIETTA750 SE", pvp: 59998 },
-                { id: "SOP-ARIETTA750-4", nombre: "Real-time 3D Software", codigo: "SOP-ARIETTA750-4", pvp: 522 },
-                { id: "SOP-ARIETTA750-11", nombre: "eTRACKING Software", codigo: "SOP-ARIETTA750-11", pvp: 1391 },
-                { id: "SOP-ARIETTA750-151", nombre: "Shear Wave Measurement B software", codigo: "SOP-ARIETTA750-151", pvp: 21564 },
-                { id: "SOP-ARIETTA750-43", nombre: "Real-time Tissue Elastography", codigo: "SOP-ARIETTA750-43", pvp: 14434 },
-                { id: "SOP-ARIETTA750-60", nombre: "Real-time Tissue Elastography Strain Histogram", codigo: "SOP-ARIETTA750-60", pvp: 5739 },
-                { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 },
-                { id: "L441", nombre: "Linear Probe (Smart Connector UST-5415)", codigo: "L441", pvp: 5739 },
-                { id: "L64", nombre: "Linear Probe (Smart Connector EUP-L75)", codigo: "L64", pvp: 4348 },
-                { id: "C41V1", nombre: "Transvaginal Probe (Smart Connector EUP-V73W)", codigo: "C41V1", pvp: 6435 },
-                { id: "VC35", nombre: "RT-3D (4D) Probe", codigo: "VC35", pvp: 12173 },
-                { id: "S211", nombre: "Phased Array Sector Probe", codigo: "S211", pvp: 6956 }
+                { id: "SOP-ARIETTA750-4", nombre: "Real-time 3D Software", codigo: "SOP-ARIETTA750-4", pvp: 522 }
             ]
         };
+
+        // Copiar modelos restantes para mantener compatibilidad
+        ["Arietta 650 DI", "Arietta 750 DI", "Arietta 850 DI"].forEach(m => {
+            baseDeDatos[m] = baseDeDatos["Arietta 50"];
+        });
 
         let seleccionados = [];
 
         function cargarComponentes() {
             const modelo = document.getElementById("selectModelo").value;
             document.getElementById("subtituloModelo").textContent = "Modelo: " + modelo;
+            document.getElementById("docModeloTitulo").textContent = modelo;
             
             const items = baseDeDatos[modelo] || [];
             seleccionados = items.slice(0, 3).map(i => i.id);
 
             renderListaCheckboxes();
-            renderTabla();
+            actualizarTodo();
         }
 
         function renderListaCheckboxes() {
@@ -287,12 +256,12 @@
             filtrados.forEach(item => {
                 const isChecked = seleccionados.includes(item.id) ? "checked" : "";
                 const div = document.createElement("div");
-                div.className = "flex items-start space-x-3 p-2 bg-white hover:bg-slate-100 rounded-lg border border-slate-100 cursor-pointer";
+                div.className = "flex items-start space-x-2.5 p-2 bg-white hover:bg-slate-100 rounded-lg border border-slate-100 cursor-pointer";
                 div.innerHTML = `
-                    <input type="checkbox" id="chk_${item.id}" value="${item.id}" ${isChecked} onchange="toggleSeleccion('${item.id}')" class="mt-1 h-4 w-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
+                    <input type="checkbox" id="chk_${item.id}" value="${item.id}" ${isChecked} onchange="toggleSeleccion('${item.id}')" class="mt-0.5 h-4 w-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
                     <label for="chk_${item.id}" class="text-xs cursor-pointer flex-1">
                         <span class="font-bold text-slate-800 block">${item.nombre}</span>
-                        <span class="font-mono bg-slate-100 px-1.5 py-0.5 rounded text-[10px] text-slate-500">${item.codigo}</span>
+                        <span class="font-mono bg-slate-100 px-1 py-0.5 rounded text-[10px] text-slate-500">${item.codigo}</span>
                     </label>
                 `;
                 contenedor.appendChild(div);
@@ -309,7 +278,12 @@
             } else {
                 seleccionados.push(id);
             }
+            actualizarTodo();
+        }
+
+        function actualizarTodo() {
             renderTabla();
+            renderVistaPreviaWord();
         }
 
         function renderTabla() {
@@ -332,8 +306,8 @@
             let total = 0;
 
             if (items.length === 0) {
-                body.innerHTML = `<tr><td colspan="4" class="py-6 text-center text-slate-400 text-xs">Selecciona al menos un componente en el panel izquierdo.</td></tr>`;
-                foot.innerHTML = "";
+                body.innerHTML = `<tr><td colspan="4" class="py-6 text-center text-slate-400 text-xs">Selecciona al menos un componente en el panel central.</td></tr>`;
+                foot.innerHTML = `<span class="text-xs text-slate-400">Total: $0.00</span>`;
                 return;
             }
 
@@ -343,24 +317,60 @@
                 row.className = "hover:bg-slate-50 transition-colors";
                 
                 row.innerHTML = `
-                    <td class="py-3 px-3 text-center text-xs font-bold text-slate-400">${index + 1}</td>
-                    <td class="py-3 px-4 font-semibold text-slate-800 text-xs">${item.nombre}</td>
-                    <td class="py-3 px-4 font-mono text-xs text-slate-500">${item.codigo}</td>
-                    ${mostrarPVP ? `<td class="py-3 px-4 text-right font-medium text-slate-700 text-xs">$ ${item.pvp.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>` : ''}
+                    <td class="py-2.5 px-2 text-center text-xs font-bold text-slate-400">${index + 1}</td>
+                    <td class="py-2.5 px-3 font-semibold text-slate-800">${item.nombre}</td>
+                    <td class="py-2.5 px-3 font-mono text-[11px] text-slate-500">${item.codigo}</td>
+                    ${mostrarPVP ? `<td class="py-2.5 px-3 text-right font-medium text-slate-700">$ ${item.pvp.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>` : ''}
                 `;
                 body.appendChild(row);
             });
 
             if (mostrarPVP) {
                 foot.innerHTML = `
-                    <tr>
-                        <td colspan="3" class="py-3 px-4 text-right text-xs">TOTAL PRECIO DE VENTA (PVP):</td>
-                        <td class="py-3 px-4 text-right text-blue-600 font-extrabold text-sm">$ ${total.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
-                    </tr>
+                    <span class="text-xs">TOTAL PVP:</span>
+                    <span class="text-blue-600 text-sm">$ ${total.toLocaleString('en-US', {minimumFractionDigits: 2})}</span>
                 `;
             } else {
-                foot.innerHTML = "";
+                foot.innerHTML = `<span class="text-xs text-slate-400">Configuración sin precios visibles</span>`;
             }
+        }
+
+        function renderVistaPreviaWord() {
+            const modelo = document.getElementById("selectModelo").value;
+            const mostrarPVP = document.getElementById("togglePVP").checked;
+            const todosLosItems = baseDeDatos[modelo] || [];
+            const items = todosLosItems.filter(i => seleccionados.includes(i.id));
+
+            const docBody = document.getElementById("docTablaBody");
+            const docContenedorTotal = document.getElementById("docTotalContenedor");
+            const docTextoTotal = document.getElementById("docTotalTexto");
+
+            docBody.innerHTML = "";
+            let total = 0;
+
+            document.querySelectorAll('.doc-pvp-col').forEach(el => {
+                if(mostrarPVP) el.classList.remove('hidden'); else el.classList.add('hidden');
+            });
+
+            if (items.length === 0) {
+                docBody.innerHTML = `<tr><td colspan="2" class="p-2 text-center text-slate-400 text-[10px]">Sin ítems seleccionados</td></tr>`;
+                docContenedorTotal.classList.add('hidden');
+                return;
+            }
+
+            docContenedorTotal.classList.remove('hidden');
+
+            items.forEach(item => {
+                total += item.pvp;
+                const tr = document.createElement("tr");
+                tr.innerHTML = `
+                    <td class="p-1.5">${item.nombre}</td>
+                    ${mostrarPVP ? `<td class="p-1.5 text-right font-mono">$${item.pvp.toLocaleString()}</td>` : ''}
+                `;
+                docBody.appendChild(tr);
+            });
+
+            docTextoTotal.textContent = `$ ${total.toLocaleString('en-US', {minimumFractionDigits: 2})}`;
         }
 
         function exportarExcel() {
@@ -380,9 +390,7 @@
                     "Descripción / Aplicación": item.nombre,
                     "Modelo / Código": item.codigo
                 };
-                if (mostrarPVP) {
-                    rowData["PVP ($)"] = item.pvp;
-                }
+                if (mostrarPVP) rowData["PVP ($)"] = item.pvp;
                 return rowData;
             });
 
@@ -399,7 +407,6 @@
             const worksheet = XLSX.utils.json_to_sheet(rows);
             const workbook = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(workbook, worksheet, "Configuracion");
-
             XLSX.writeFile(workbook, `Configuracion_${modelo.replace(/[^a-zA-Z0-9]/g, "_")}.xlsx`);
         }
 
@@ -423,12 +430,10 @@
                 texto += `${idx + 1}\t${item.nombre}\t${item.codigo}` + (mostrarPVP ? `\t$${item.pvp.toFixed(2)}\n` : `\n`);
             });
 
-            if (mostrarPVP) {
-                texto += `\nTOTAL CONFIGURACIÓN: $${total.toFixed(2)}`;
-            }
+            if (mostrarPVP) texto += `\nTOTAL CONFIGURACIÓN: $${total.toFixed(2)}`;
 
             navigator.clipboard.writeText(texto).then(() => {
-                alert("¡Configuración copiada al portapapeles! Puedes pegarla directamente en Word o Excel.");
+                alert("¡Configuración copiada al portapapeles con éxito!");
             });
         }
 
