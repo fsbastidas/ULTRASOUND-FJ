@@ -47,11 +47,10 @@
                         <option value="Arietta 65">Arietta 65</option>  
                         <option value="Arietta 650 DI">Arietta 650 DI</option>
                         <option value="Arietta 750 SE">Arietta 750 SE</option>
+                        <option value="Arietta 750 DI">Arietta 750 DI</option>
                         <option value="Arietta 850">Arietta 850</option>
                         <option value="Arietta 850 DI">Arietta 850 DI</option>
                         <option value="Lisendo 880">Lisendo 880</option>
-                        <option value="Futus">Futus</option>
-                        <option value="Arietta Precision">Arietta Precision</option>
                     </select>
                 </div>
 
@@ -128,7 +127,51 @@
     <script>
         // Catálogo extraído directamente de tu Excel comercial de PVP
         const baseDeDatos = {
-            "Arietta 750 VE, SE": [
+
+                        <option value="Arietta 750 SE">Arietta 750 SE</option>
+                        <option value="Arietta 850">Arietta 850</option>
+                        <option value="Arietta 850 DI">Arietta 850 DI</option>
+                        <option value="Lisendo 880">Lisendo 880</option>
+        
+            "Arietta 50": [
+                { id: "SSD-ARIETTA50", nombre: "Ultrasound System, 3 Probe Connector, Fixed Monitor Arm", codigo: "SSD-ARIETTA50", pvp: 19130 },
+                { id: "SSD-ARIETTA50LE", nombre: "Ultrasound System, 4 Probe Connector, Flexible Monitor Arm", codigo: "SSD-ARIETTA50LE", pvp: 20869 },
+                { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 },
+                { id: "L441", nombre: "Linear Probe (Smart Connector UST-5415)", codigo: "L441", pvp: 5739 },
+                { id: "C41V1", nombre: "Transvaginal Probe (Smart Connector EUP-V73W)", codigo: "C41V1", pvp: 6435 },
+                { id: "SOP-AR50-10", nombre: "DICOM Network Communication Software", codigo: "SOP-AR50-10", pvp: 2956 }
+            ],
+            "Arietta 50 LE": [
+                { id: "SSD-ARIETTA50", nombre: "Ultrasound System, 3 Probe Connector, Fixed Monitor Arm", codigo: "SSD-ARIETTA50", pvp: 19130 },
+                { id: "SSD-ARIETTA50LE", nombre: "Ultrasound System, 4 Probe Connector, Flexible Monitor Arm", codigo: "SSD-ARIETTA50LE", pvp: 20869 },
+                { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 },
+                { id: "L441", nombre: "Linear Probe (Smart Connector UST-5415)", codigo: "L441", pvp: 5739 },
+                { id: "C41V1", nombre: "Transvaginal Probe (Smart Connector EUP-V73W)", codigo: "C41V1", pvp: 6435 },
+                { id: "SOP-AR50-10", nombre: "DICOM Network Communication Software", codigo: "SOP-AR50-10", pvp: 2956 }
+            ],
+            "Arietta 65": [
+                { id: "SSD-ARIETTA650(OLED)", nombre: "Ultrasound System (OLED Monitor)", codigo: "SSD-ARIETTA650(OLED)", pvp: 45216 },
+                { id: "SSD-ARIETTA650(LCD)", nombre: "Ultrasound System (LCD Monitor)", codigo: "SSD-ARIETTA650(LCD)", pvp: 39999 },
+                { id: "EU-9198", nombre: "CW servo unit", codigo: "EU-9198", pvp: 1391 },
+                { id: "PEU-ARIETTA65", nombre: "Physiological Signal Display Unit", codigo: "PEU-ARIETTA65", pvp: 1739 },
+                { id: "EU-9206", nombre: "SWM unit", codigo: "EU-9206", pvp: 4348 },
+                { id: "EU-9199", nombre: "Battery unit", codigo: "EU-9199", pvp: 2609 },
+                { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 },
+                { id: "L441", nombre: "Linear Probe (Smart Connector)", codigo: "L441", pvp: 5739 },
+                { id: "C41V1", nombre: "Transvaginal Probe", codigo: "C41V1", pvp: 6435 }
+            ]
+            "Arietta 650 DI": [
+                { id: "SSD-ARIETTA650(OLED)", nombre: "Ultrasound System (OLED Monitor)", codigo: "SSD-ARIETTA650(OLED)", pvp: 45216 },
+                { id: "SSD-ARIETTA650(LCD)", nombre: "Ultrasound System (LCD Monitor)", codigo: "SSD-ARIETTA650(LCD)", pvp: 39999 },
+                { id: "EU-9198", nombre: "CW servo unit", codigo: "EU-9198", pvp: 1391 },
+                { id: "PEU-ARIETTA65", nombre: "Physiological Signal Display Unit", codigo: "PEU-ARIETTA65", pvp: 1739 },
+                { id: "EU-9206", nombre: "SWM unit", codigo: "EU-9206", pvp: 4348 },
+                { id: "EU-9199", nombre: "Battery unit", codigo: "EU-9199", pvp: 2609 },
+                { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 },
+                { id: "L441", nombre: "Linear Probe (Smart Connector)", codigo: "L441", pvp: 5739 },
+                { id: "C41V1", nombre: "Transvaginal Probe", codigo: "C41V1", pvp: 6435 }
+            ]
+            "Arietta 750 SE": [
                 { id: "SSD-ARIETTA750 VE", nombre: "Ultrasound System (21\" LCD)", codigo: "SSD-ARIETTA750 VE", pvp: 54781 },
                 { id: "SSD-ARIETTA750 SE", nombre: "Ultrasound System (23\" LCD)", codigo: "SSD-ARIETTA750 SE", pvp: 59998 },
                 { id: "SOP-ARIETTA750-4", nombre: "Real-time 3D Software", codigo: "SOP-ARIETTA750-4", pvp: 522 },
@@ -143,25 +186,66 @@
                 { id: "VC35", nombre: "RT-3D (4D) Probe", codigo: "VC35", pvp: 12173 },
                 { id: "S211", nombre: "Phased Array Sector Probe", codigo: "S211", pvp: 6956 }
             ],
-            "Arietta 650 DI": [
-                { id: "SSD-ARIETTA650(OLED)", nombre: "Ultrasound System (OLED Monitor)", codigo: "SSD-ARIETTA650(OLED)", pvp: 45216 },
-                { id: "SSD-ARIETTA650(LCD)", nombre: "Ultrasound System (LCD Monitor)", codigo: "SSD-ARIETTA650(LCD)", pvp: 39999 },
-                { id: "EU-9198", nombre: "CW servo unit", codigo: "EU-9198", pvp: 1391 },
-                { id: "PEU-ARIETTA65", nombre: "Physiological Signal Display Unit", codigo: "PEU-ARIETTA65", pvp: 1739 },
-                { id: "EU-9206", nombre: "SWM unit", codigo: "EU-9206", pvp: 4348 },
-                { id: "EU-9199", nombre: "Battery unit", codigo: "EU-9199", pvp: 2609 },
-                { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 },
-                { id: "L441", nombre: "Linear Probe (Smart Connector)", codigo: "L441", pvp: 5739 },
-                { id: "C41V1", nombre: "Transvaginal Probe", codigo: "C41V1", pvp: 6435 }
-            ],
-            "Arietta 50": [
-                { id: "SSD-ARIETTA50", nombre: "Ultrasound System, 3 Probe Connector, Fixed Monitor Arm", codigo: "SSD-ARIETTA50", pvp: 19130 },
-                { id: "SSD-ARIETTA50LE", nombre: "Ultrasound System, 4 Probe Connector, Flexible Monitor Arm", codigo: "SSD-ARIETTA50LE", pvp: 20869 },
+            "Arietta 750 DI": [
+                { id: "SSD-ARIETTA750 VE", nombre: "Ultrasound System (21\" LCD)", codigo: "SSD-ARIETTA750 VE", pvp: 54781 },
+                { id: "SSD-ARIETTA750 SE", nombre: "Ultrasound System (23\" LCD)", codigo: "SSD-ARIETTA750 SE", pvp: 59998 },
+                { id: "SOP-ARIETTA750-4", nombre: "Real-time 3D Software", codigo: "SOP-ARIETTA750-4", pvp: 522 },
+                { id: "SOP-ARIETTA750-11", nombre: "eTRACKING Software", codigo: "SOP-ARIETTA750-11", pvp: 1391 },
+                { id: "SOP-ARIETTA750-151", nombre: "Shear Wave Measurement B software", codigo: "SOP-ARIETTA750-151", pvp: 21564 },
+                { id: "SOP-ARIETTA750-43", nombre: "Real-time Tissue Elastography", codigo: "SOP-ARIETTA750-43", pvp: 14434 },
+                { id: "SOP-ARIETTA750-60", nombre: "Real-time Tissue Elastography Strain Histogram", codigo: "SOP-ARIETTA750-60", pvp: 5739 },
                 { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 },
                 { id: "L441", nombre: "Linear Probe (Smart Connector UST-5415)", codigo: "L441", pvp: 5739 },
+                { id: "L64", nombre: "Linear Probe (Smart Connector EUP-L75)", codigo: "L64", pvp: 4348 },
                 { id: "C41V1", nombre: "Transvaginal Probe (Smart Connector EUP-V73W)", codigo: "C41V1", pvp: 6435 },
-                { id: "SOP-AR50-10", nombre: "DICOM Network Communication Software", codigo: "SOP-AR50-10", pvp: 2956 }
-            ]
+                { id: "VC35", nombre: "RT-3D (4D) Probe", codigo: "VC35", pvp: 12173 },
+                { id: "S211", nombre: "Phased Array Sector Probe", codigo: "S211", pvp: 6956 }
+            ],
+            "Arietta 850": [
+                { id: "SSD-ARIETTA750 VE", nombre: "Ultrasound System (21\" LCD)", codigo: "SSD-ARIETTA750 VE", pvp: 54781 },
+                { id: "SSD-ARIETTA750 SE", nombre: "Ultrasound System (23\" LCD)", codigo: "SSD-ARIETTA750 SE", pvp: 59998 },
+                { id: "SOP-ARIETTA750-4", nombre: "Real-time 3D Software", codigo: "SOP-ARIETTA750-4", pvp: 522 },
+                { id: "SOP-ARIETTA750-11", nombre: "eTRACKING Software", codigo: "SOP-ARIETTA750-11", pvp: 1391 },
+                { id: "SOP-ARIETTA750-151", nombre: "Shear Wave Measurement B software", codigo: "SOP-ARIETTA750-151", pvp: 21564 },
+                { id: "SOP-ARIETTA750-43", nombre: "Real-time Tissue Elastography", codigo: "SOP-ARIETTA750-43", pvp: 14434 },
+                { id: "SOP-ARIETTA750-60", nombre: "Real-time Tissue Elastography Strain Histogram", codigo: "SOP-ARIETTA750-60", pvp: 5739 },
+                { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 },
+                { id: "L441", nombre: "Linear Probe (Smart Connector UST-5415)", codigo: "L441", pvp: 5739 },
+                { id: "L64", nombre: "Linear Probe (Smart Connector EUP-L75)", codigo: "L64", pvp: 4348 },
+                { id: "C41V1", nombre: "Transvaginal Probe (Smart Connector EUP-V73W)", codigo: "C41V1", pvp: 6435 },
+                { id: "VC35", nombre: "RT-3D (4D) Probe", codigo: "VC35", pvp: 12173 },
+                { id: "S211", nombre: "Phased Array Sector Probe", codigo: "S211", pvp: 6956 }
+            ],
+            "Arietta 850 DI": [
+                { id: "SSD-ARIETTA750 VE", nombre: "Ultrasound System (21\" LCD)", codigo: "SSD-ARIETTA750 VE", pvp: 54781 },
+                { id: "SSD-ARIETTA750 SE", nombre: "Ultrasound System (23\" LCD)", codigo: "SSD-ARIETTA750 SE", pvp: 59998 },
+                { id: "SOP-ARIETTA750-4", nombre: "Real-time 3D Software", codigo: "SOP-ARIETTA750-4", pvp: 522 },
+                { id: "SOP-ARIETTA750-11", nombre: "eTRACKING Software", codigo: "SOP-ARIETTA750-11", pvp: 1391 },
+                { id: "SOP-ARIETTA750-151", nombre: "Shear Wave Measurement B software", codigo: "SOP-ARIETTA750-151", pvp: 21564 },
+                { id: "SOP-ARIETTA750-43", nombre: "Real-time Tissue Elastography", codigo: "SOP-ARIETTA750-43", pvp: 14434 },
+                { id: "SOP-ARIETTA750-60", nombre: "Real-time Tissue Elastography Strain Histogram", codigo: "SOP-ARIETTA750-60", pvp: 5739 },
+                { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 },
+                { id: "L441", nombre: "Linear Probe (Smart Connector UST-5415)", codigo: "L441", pvp: 5739 },
+                { id: "L64", nombre: "Linear Probe (Smart Connector EUP-L75)", codigo: "L64", pvp: 4348 },
+                { id: "C41V1", nombre: "Transvaginal Probe (Smart Connector EUP-V73W)", codigo: "C41V1", pvp: 6435 },
+                { id: "VC35", nombre: "RT-3D (4D) Probe", codigo: "VC35", pvp: 12173 },
+                { id: "S211", nombre: "Phased Array Sector Probe", codigo: "S211", pvp: 6956 }
+            ],
+            "Lisendo 880": [
+                { id: "SSD-ARIETTA750 VE", nombre: "Ultrasound System (21\" LCD)", codigo: "SSD-ARIETTA750 VE", pvp: 54781 },
+                { id: "SSD-ARIETTA750 SE", nombre: "Ultrasound System (23\" LCD)", codigo: "SSD-ARIETTA750 SE", pvp: 59998 },
+                { id: "SOP-ARIETTA750-4", nombre: "Real-time 3D Software", codigo: "SOP-ARIETTA750-4", pvp: 522 },
+                { id: "SOP-ARIETTA750-11", nombre: "eTRACKING Software", codigo: "SOP-ARIETTA750-11", pvp: 1391 },
+                { id: "SOP-ARIETTA750-151", nombre: "Shear Wave Measurement B software", codigo: "SOP-ARIETTA750-151", pvp: 21564 },
+                { id: "SOP-ARIETTA750-43", nombre: "Real-time Tissue Elastography", codigo: "SOP-ARIETTA750-43", pvp: 14434 },
+                { id: "SOP-ARIETTA750-60", nombre: "Real-time Tissue Elastography Strain Histogram", codigo: "SOP-ARIETTA750-60", pvp: 5739 },
+                { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 },
+                { id: "L441", nombre: "Linear Probe (Smart Connector UST-5415)", codigo: "L441", pvp: 5739 },
+                { id: "L64", nombre: "Linear Probe (Smart Connector EUP-L75)", codigo: "L64", pvp: 4348 },
+                { id: "C41V1", nombre: "Transvaginal Probe (Smart Connector EUP-V73W)", codigo: "C41V1", pvp: 6435 },
+                { id: "VC35", nombre: "RT-3D (4D) Probe", codigo: "VC35", pvp: 12173 },
+                { id: "S211", nombre: "Phased Array Sector Probe", codigo: "S211", pvp: 6956 }
+            ],
         };
 
         let seleccionados = [];
