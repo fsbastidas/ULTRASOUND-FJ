@@ -3,24 +3,29 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Configurador de Ecógrafos</title>
+    <title>Configurador de Ecógrafos Fujifilm - PERFETECH</title>
     <!-- Tailwind CSS para diseño moderno -->
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Librería para exportar a Excel real (.xlsx) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
-<body class="bg-slate-100 min-h-screen p-6 font-sans">
+<body class="bg-slate-100 min-h-screen p-4 md:p-8 font-sans">
 
-    <div class="max-w-5xl mx-auto space-y-6">
+    <div class="max-w-7xl mx-auto space-y-6">
         
-        <!-- Encabezado -->
-        <header class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+        <!-- Encabezado Principal -->
+        <header class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-                <h1 class="text-2xl font-bold text-slate-800">Configurador de Ecógrafos</h1>
-                <p class="text-slate-500 text-sm">Selecciona las aplicaciones para armar la propuesta técnica/comercial</p>
+                <div class="flex items-center space-x-3">
+                    <span class="bg-emerald-600 text-white font-bold text-xs px-2.5 py-1 rounded-md uppercase tracking-wider">FUJIFILM</span>
+                    <h1 class="text-2xl font-bold text-slate-800">Configurador de Ecógrafos</h1>
+                </div>
+                <p class="text-slate-500 text-sm mt-1">Arma configuraciones comerciales con códigos, licencias, transductores y PVP oficial</p>
             </div>
             
-            <!-- Interruptor Mostrar/Ocultar PVP -->
-            <div class="flex items-center space-x-3 bg-slate-50 p-3 rounded-lg border border-slate-200">
-                <span class="text-sm font-medium text-slate-700">Mostrar PVP en la tabla</span>
+            <!-- Controles Superiores: Toggle PVP -->
+            <div class="flex items-center space-x-4 bg-slate-50 p-3 rounded-xl border border-slate-200">
+                <span class="text-xs md:text-sm font-semibold text-slate-700">Mostrar PVP en la tabla</span>
                 <label class="relative inline-flex items-center cursor-pointer">
                     <input type="checkbox" id="togglePVP" class="sr-only peer" checked onchange="renderTabla()">
                     <div class="w-11 h-6 bg-slate-300 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-slate-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-blue-600"></div>
@@ -28,78 +33,133 @@
             </div>
         </header>
 
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
             
-            <!-- Panel Lateral: Selección de Modelo y Aplicaciones -->
-            <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-6">
+            <!-- Panel Izquierdo: Selección y Filtros -->
+            <div class="lg:col-span-5 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 space-y-5">
                 
-                <!-- 1. Selección de Ecógrafo -->
+                <!-- 1. Selección del Ecógrafo -->
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">1. Selecciona el Ecógrafo</label>
-                    <select id="selectModelo" onchange="cargarComponentes()" class="w-full p-2.5 border border-slate-300 rounded-lg focus:ring-2 focus:ring-blue-500 text-sm bg-white">
-                        <option value="ARIETTA_750">ARIETTA 750 SE</option>
-                        <option value="ARIETTA_650">ARIETTA 650</option>
+                    <label class="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2">1. Modelo de Ecógrafo</label>
+                    <select id="selectModelo" onchange="cargarComponentes()" class="w-full p-3 border border-slate-300 rounded-xl focus:ring-2 focus:ring-blue-500 font-semibold text-slate-800 bg-slate-50">
+                        <option value="Arietta 750 VE, SE">Arietta 750 VE, SE</option>
+                        <option value="Arietta 650 DI">Arietta 650 DI</option>
+                        <option value="Arietta 65">Arietta 65</option>
+                        <option value="Arietta 50">Arietta 50</option>
+                        <option value="AR50 & AR50LE">AR50 & AR50LE</option>
+                        <option value="Arietta 850 & 850 DI">Arietta 850 & 850 DI</option>
+                        <option value="Lisendo 880">Lisendo 880</option>
+                        <option value="Futus">Futus</option>
+                        <option value="Arietta Precision">Arietta Precision</option>
                     </select>
                 </div>
 
-                <!-- 2. Lista de Aplicaciones / Licencias / Transductores -->
+                <!-- Buscador rápido -->
                 <div>
-                    <label class="block text-sm font-semibold text-slate-700 mb-2">2. Selecciona Aplicaciones y Licencias</label>
-                    <div id="listaCheckboxes" class="space-y-3 max-h-80 overflow-y-auto pr-1">
-                        <!-- Se llena dinámicamente -->
+                    <input type="text" id="busquedaInput" oninput="filtrarComponentes()" placeholder="🔍 Buscar por nombre o código (ej. C253, SOP, Elasticity)..." class="w-full p-2.5 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500">
+                </div>
+
+                <!-- Lista de Opciones -->
+                <div>
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">2. Seleccionar Licencias / Sondas</label>
+                        <span id="contadorItems" class="text-xs text-slate-400">0 disponibles</span>
+                    </div>
+                    
+                    <div id="listaCheckboxes" class="space-y-2 max-h-[460px] overflow-y-auto pr-2 border border-slate-100 p-2 rounded-xl bg-slate-50">
+                        <!-- Checkboxes cargados por JavaScript -->
                     </div>
                 </div>
 
             </div>
 
-            <!-- Panel Principal: Tabla Resultante -->
-            <div class="md:col-span-2 bg-white p-6 rounded-xl shadow-sm border border-slate-200 space-y-4">
-                <div class="flex justify-between items-center">
-                    <h2 class="text-lg font-bold text-slate-800">Configuración Seleccionada</h2>
-                    <button onclick="copiarResumen()" class="bg-slate-800 hover:bg-slate-900 text-white text-xs px-3 py-2 rounded-lg transition-colors">
-                        📋 Copiar Tabla
-                    </button>
+            <!-- Panel Derecho: Tabla Comercial -->
+            <div class="lg:col-span-7 bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex flex-col justify-between space-y-4">
+                
+                <div class="space-y-4">
+                    <div class="flex flex-col sm:flex-row justify-between sm:items-center gap-3 border-b border-slate-100 pb-4">
+                        <div>
+                            <h2 class="text-lg font-bold text-slate-800">Propuesta Comercial de Configuración</h2>
+                            <p id="subtituloModelo" class="text-xs text-slate-500">Modelo seleccionado: Arietta 750 VE, SE</p>
+                        </div>
+                        
+                        <!-- Botones Exportación -->
+                        <div class="flex items-center space-x-2">
+                            <button onclick="exportarExcel()" class="bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold px-3.5 py-2.5 rounded-xl flex items-center space-x-1.5 transition-all shadow-sm">
+                                <span>📊 Exportar Excel</span>
+                            </button>
+                            <button onclick="copiarTabla()" class="bg-slate-800 hover:bg-slate-900 text-white text-xs font-semibold px-3.5 py-2.5 rounded-xl flex items-center space-x-1.5 transition-all shadow-sm">
+                                <span>📋 Copiar Tabla</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Tabla -->
+                    <div class="overflow-x-auto rounded-xl border border-slate-200">
+                        <table class="w-full text-sm text-left text-slate-600 border-collapse">
+                            <thead class="text-xs text-slate-700 uppercase bg-slate-100 border-b border-slate-200 font-semibold">
+                                <tr>
+                                    <th class="py-3 px-3 text-center w-10">#</th>
+                                    <th class="py-3 px-4">Componente / Aplicación</th>
+                                    <th class="py-3 px-4">Modelo / Código</th>
+                                    <th id="colHeaderPVP" class="py-3 px-4 text-right">PVP ($)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="bodyTabla" class="divide-y divide-slate-100">
+                                <!-- Filas dinámicas -->
+                            </tbody>
+                            <tfoot id="footTabla" class="border-t-2 border-slate-300 font-bold bg-slate-50 text-slate-800">
+                                <!-- Total -->
+                            </tfoot>
+                        </table>
+                    </div>
                 </div>
 
-                <div class="overflow-x-auto">
-                    <table class="w-full text-sm text-left text-slate-600 border-collapse">
-                        <thead class="text-xs text-slate-700 uppercase bg-slate-50 border-b border-slate-200">
-                            <tr>
-                                <th class="py-3 px-4">#</th>
-                                <th class="py-3 px-4">Aplicación / Componente</th>
-                                <th class="py-3 px-4">Modelo / Código</th>
-                                <th id="colHeaderPVP" class="py-3 px-4 text-right">PVP</th>
-                            </tr>
-                        </thead>
-                        <tbody id="bodyTabla">
-                            <!-- Se llena dinámicamente -->
-                        </tbody>
-                        <tfoot id="footTabla" class="border-t-2 border-slate-200 font-bold text-slate-800">
-                            <!-- Se llena dinámicamente con el Total -->
-                        </tfoot>
-                    </table>
+                <div class="text-xs text-slate-400 text-center pt-2 border-t border-slate-100">
+                    PERFETECH S.A. — Base de Datos de Equipos de Ultrasonido Fujifilm
                 </div>
+
             </div>
 
         </div>
     </div>
 
-    <!-- Script con los datos de ejemplo -->
     <script>
-        // Datos de ejemplo cruzando Aplicación -> Código -> PVP (simulando tu Excel y Cotizaciones)
+        // Catálogo extraído directamente de tu Excel comercial de PVP
         const baseDeDatos = {
-            ARIETTA_750: [
-                { id: "abd", categoria: "Aplicación", nombre: "Aplicación Abdominal y Digestivo", codigo: "EZ-ABD-A750", pvp: 1200 },
-                { id: "card", categoria: "Aplicación", nombre: "Paquete Cardiológico Avanzado", codigo: "EZ-CARD-A750", pvp: 2500 },
-                { id: "vasc", categoria: "Aplicación", nombre: "Estudio Vascular periférico", codigo: "EZ-VASC-A750", pvp: 950 },
-                { id: "obs", categoria: "Aplicación", nombre: "Obstetricia / Ginecología & 3D/4D", codigo: "EZ-OBGYN-A750", pvp: 1800 },
-                { id: "elasto", categoria: "Licencia / Software", nombre: "Elastografía Tisular (RTE)", codigo: "LIC-ELAST-01", pvp: 3100 },
-                { id: "trans_convex", categoria: "Transductor", nombre: "Transductor Convexo C252", codigo: "PROBE-C252", pvp: 4500 }
+            "Arietta 750 VE, SE": [
+                { id: "SSD-ARIETTA750 VE", nombre: "Ultrasound System (21\" LCD)", codigo: "SSD-ARIETTA750 VE", pvp: 54781 },
+                { id: "SSD-ARIETTA750 SE", nombre: "Ultrasound System (23\" LCD)", codigo: "SSD-ARIETTA750 SE", pvp: 59998 },
+                { id: "SOP-ARIETTA750-4", nombre: "Real-time 3D Software", codigo: "SOP-ARIETTA750-4", pvp: 522 },
+                { id: "SOP-ARIETTA750-11", nombre: "eTRACKING Software", codigo: "SOP-ARIETTA750-11", pvp: 1391 },
+                { id: "SOP-ARIETTA750-151", nombre: "Shear Wave Measurement B software", codigo: "SOP-ARIETTA750-151", pvp: 21564 },
+                { id: "SOP-ARIETTA750-43", nombre: "Real-time Tissue Elastography", codigo: "SOP-ARIETTA750-43", pvp: 14434 },
+                { id: "SOP-ARIETTA750-60", nombre: "Real-time Tissue Elastography Strain Histogram", codigo: "SOP-ARIETTA750-60", pvp: 5739 },
+                { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 },
+                { id: "L441", nombre: "Linear Probe (Smart Connector UST-5415)", codigo: "L441", pvp: 5739 },
+                { id: "L64", nombre: "Linear Probe (Smart Connector EUP-L75)", codigo: "L64", pvp: 4348 },
+                { id: "C41V1", nombre: "Transvaginal Probe (Smart Connector EUP-V73W)", codigo: "C41V1", pvp: 6435 },
+                { id: "VC35", nombre: "RT-3D (4D) Probe", codigo: "VC35", pvp: 12173 },
+                { id: "S211", nombre: "Phased Array Sector Probe", codigo: "S211", pvp: 6956 }
             ],
-            ARIETTA_650: [
-                { id: "abd650", categoria: "Aplicación", nombre: "Aplicación Abdominal General", codigo: "EZ-ABD-A650", pvp: 1000 },
-                { id: "card650", categoria: "Aplicación", nombre: "Ecocardiografía Básica", codigo: "EZ-CARD-A650", pvp: 1900 },
-                { id: "vasc650", categoria: "Aplicación", nombre: "Evaluación Vascular Doppler", codigo: "EZ-VASC-A650", pvp: 850 }
+            "Arietta 650 DI": [
+                { id: "SSD-ARIETTA650(OLED)", nombre: "Ultrasound System (OLED Monitor)", codigo: "SSD-ARIETTA650(OLED)", pvp: 45216 },
+                { id: "SSD-ARIETTA650(LCD)", nombre: "Ultrasound System (LCD Monitor)", codigo: "SSD-ARIETTA650(LCD)", pvp: 39999 },
+                { id: "EU-9198", nombre: "CW servo unit", codigo: "EU-9198", pvp: 1391 },
+                { id: "PEU-ARIETTA65", nombre: "Physiological Signal Display Unit", codigo: "PEU-ARIETTA65", pvp: 1739 },
+                { id: "EU-9206", nombre: "SWM unit", codigo: "EU-9206", pvp: 4348 },
+                { id: "EU-9199", nombre: "Battery unit", codigo: "EU-9199", pvp: 2609 },
+                { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 },
+                { id: "L441", nombre: "Linear Probe (Smart Connector)", codigo: "L441", pvp: 5739 },
+                { id: "C41V1", nombre: "Transvaginal Probe", codigo: "C41V1", pvp: 6435 }
+            ],
+            "Arietta 50": [
+                { id: "SSD-ARIETTA50", nombre: "Ultrasound System, 3 Probe Connector, Fixed Monitor Arm", codigo: "SSD-ARIETTA50", pvp: 19130 },
+                { id: "SSD-ARIETTA50LE", nombre: "Ultrasound System, 4 Probe Connector, Flexible Monitor Arm", codigo: "SSD-ARIETTA50LE", pvp: 20869 },
+                { id: "C253", nombre: "Convex Probe (1-5MHz)", codigo: "C253", pvp: 2783 },
+                { id: "L441", nombre: "Linear Probe (Smart Connector UST-5415)", codigo: "L441", pvp: 5739 },
+                { id: "C41V1", nombre: "Transvaginal Probe (Smart Connector EUP-V73W)", codigo: "C41V1", pvp: 6435 },
+                { id: "SOP-AR50-10", nombre: "DICOM Network Communication Software", codigo: "SOP-AR50-10", pvp: 2956 }
             ]
         };
 
@@ -107,28 +167,50 @@
 
         function cargarComponentes() {
             const modelo = document.getElementById("selectModelo").value;
-            const items = baseDeDatos[modelo];
+            document.getElementById("subtituloModelo").textContent = "Modelo: " + modelo;
+            
+            const items = baseDeDatos[modelo] || [];
+            seleccionados = items.slice(0, 3).map(i => i.id);
+
+            renderListaCheckboxes();
+            renderTabla();
+        }
+
+        function renderListaCheckboxes() {
+            const modelo = document.getElementById("selectModelo").value;
+            const busqueda = document.getElementById("busquedaInput").value.toLowerCase();
+            const items = baseDeDatos[modelo] || [];
             const contenedor = document.getElementById("listaCheckboxes");
             contenedor.innerHTML = "";
 
-            // Seleccionar los 3 primeros por defecto
-            seleccionados = items.slice(0, 3).map(i => i.id);
+            const filtrados = items.filter(item => 
+                item.nombre.toLowerCase().includes(busqueda) || item.codigo.toLowerCase().includes(busqueda)
+            );
 
-            items.forEach(item => {
+            document.getElementById("contadorItems").textContent = filtrados.length + " encontrados";
+
+            if (filtrados.length === 0) {
+                contenedor.innerHTML = `<p class="text-xs text-slate-400 p-3 text-center">No hay ítems con ese criterio.</p>`;
+                return;
+            }
+
+            filtrados.forEach(item => {
                 const isChecked = seleccionados.includes(item.id) ? "checked" : "";
                 const div = document.createElement("div");
-                div.className = "flex items-start space-x-3 p-2 hover:bg-slate-50 rounded-lg cursor-pointer";
+                div.className = "flex items-start space-x-3 p-2 bg-white hover:bg-slate-100 rounded-lg border border-slate-100 cursor-pointer";
                 div.innerHTML = `
                     <input type="checkbox" id="chk_${item.id}" value="${item.id}" ${isChecked} onchange="toggleSeleccion('${item.id}')" class="mt-1 h-4 w-4 text-blue-600 rounded border-slate-300 focus:ring-blue-500">
-                    <label for="chk_${item.id}" class="text-xs text-slate-700 cursor-pointer">
-                        <span class="font-medium block text-slate-800">${item.nombre}</span>
-                        <span class="text-slate-400">Código: ${item.codigo}</span>
+                    <label for="chk_${item.id}" class="text-xs cursor-pointer flex-1">
+                        <span class="font-bold text-slate-800 block">${item.nombre}</span>
+                        <span class="font-mono bg-slate-100 px-1.5 py-0.5 rounded text-[10px] text-slate-500">${item.codigo}</span>
                     </label>
                 `;
                 contenedor.appendChild(div);
             });
+        }
 
-            renderTabla();
+        function filtrarComponentes() {
+            renderListaCheckboxes();
         }
 
         function toggleSeleccion(id) {
@@ -143,13 +225,13 @@
         function renderTabla() {
             const modelo = document.getElementById("selectModelo").value;
             const mostrarPVP = document.getElementById("togglePVP").checked;
-            const items = baseDeDatos[modelo].filter(i => seleccionados.includes(i.id));
+            const todosLosItems = baseDeDatos[modelo] || [];
+            const items = todosLosItems.filter(i => seleccionados.includes(i.id));
 
             const body = document.getElementById("bodyTabla");
             const foot = document.getElementById("footTabla");
             const colHeaderPVP = document.getElementById("colHeaderPVP");
 
-            // Mostrar u ocultar cabecera de PVP
             if (mostrarPVP) {
                 colHeaderPVP.classList.remove("hidden");
             } else {
@@ -160,7 +242,7 @@
             let total = 0;
 
             if (items.length === 0) {
-                body.innerHTML = `<tr><td colspan="4" class="py-4 text-center text-slate-400">No has seleccionado ninguna aplicación.</td></tr>`;
+                body.innerHTML = `<tr><td colspan="4" class="py-6 text-center text-slate-400 text-xs">Selecciona al menos un componente en el panel izquierdo.</td></tr>`;
                 foot.innerHTML = "";
                 return;
             }
@@ -168,23 +250,22 @@
             items.forEach((item, index) => {
                 total += item.pvp;
                 const row = document.createElement("tr");
-                row.className = "border-b border-slate-100 hover:bg-slate-50";
+                row.className = "hover:bg-slate-50 transition-colors";
                 
                 row.innerHTML = `
-                    <td class="py-3 px-4 font-medium">${index + 1}</td>
-                    <td class="py-3 px-4 font-medium text-slate-800">${item.nombre}</td>
+                    <td class="py-3 px-3 text-center text-xs font-bold text-slate-400">${index + 1}</td>
+                    <td class="py-3 px-4 font-semibold text-slate-800 text-xs">${item.nombre}</td>
                     <td class="py-3 px-4 font-mono text-xs text-slate-500">${item.codigo}</td>
-                    ${mostrarPVP ? `<td class="py-3 px-4 text-right font-medium text-slate-700">$ ${item.pvp.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>` : ''}
+                    ${mostrarPVP ? `<td class="py-3 px-4 text-right font-medium text-slate-700 text-xs">$ ${item.pvp.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>` : ''}
                 `;
                 body.appendChild(row);
             });
 
-            // Fila Total
             if (mostrarPVP) {
                 foot.innerHTML = `
                     <tr>
-                        <td colspan="3" class="py-3 px-4 text-right">Total PVP:</td>
-                        <td class="py-3 px-4 text-right text-blue-600 font-bold">$ ${total.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
+                        <td colspan="3" class="py-3 px-4 text-right text-xs">TOTAL PRECIO DE VENTA (PVP):</td>
+                        <td class="py-3 px-4 text-right text-blue-600 font-extrabold text-sm">$ ${total.toLocaleString('en-US', {minimumFractionDigits: 2})}</td>
                     </tr>
                 `;
             } else {
@@ -192,12 +273,76 @@
             }
         }
 
-        function copiarResumen() {
-            alert("¡Configuración copiada al portapapeles!");
+        function exportarExcel() {
+            const modelo = document.getElementById("selectModelo").value;
+            const mostrarPVP = document.getElementById("togglePVP").checked;
+            const todosLosItems = baseDeDatos[modelo] || [];
+            const items = todosLosItems.filter(i => seleccionados.includes(i.id));
+
+            if (items.length === 0) {
+                alert("Selecciona al menos un ítem antes de exportar.");
+                return;
+            }
+
+            const rows = items.map((item, idx) => {
+                let rowData = {
+                    "Item": idx + 1,
+                    "Descripción / Aplicación": item.nombre,
+                    "Modelo / Código": item.codigo
+                };
+                if (mostrarPVP) {
+                    rowData["PVP ($)"] = item.pvp;
+                }
+                return rowData;
+            });
+
+            if (mostrarPVP) {
+                const total = items.reduce((acc, curr) => acc + curr.pvp, 0);
+                rows.push({
+                    "Item": "",
+                    "Descripción / Aplicación": "TOTAL DE LA CONFIGURACIÓN",
+                    "Modelo / Código": "",
+                    "PVP ($)": total
+                });
+            }
+
+            const worksheet = XLSX.utils.json_to_sheet(rows);
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Configuracion");
+
+            XLSX.writeFile(workbook, `Configuracion_${modelo.replace(/[^a-zA-Z0-9]/g, "_")}.xlsx`);
         }
 
-        // Inicializar al cargar
-        cargarComponentes();
+        function copiarTabla() {
+            const modelo = document.getElementById("selectModelo").value;
+            const mostrarPVP = document.getElementById("togglePVP").checked;
+            const todosLosItems = baseDeDatos[modelo] || [];
+            const items = todosLosItems.filter(i => seleccionados.includes(i.id));
+
+            if (items.length === 0) {
+                alert("No hay ítems para copiar.");
+                return;
+            }
+
+            let texto = `CONFIGURACIÓN DE ECÓGRAFO - ${modelo}\n\n`;
+            texto += `Ítem\tDescripción / Aplicación\tCódigo / Modelo` + (mostrarPVP ? `\tPVP ($)\n` : `\n`);
+
+            let total = 0;
+            items.forEach((item, idx) => {
+                total += item.pvp;
+                texto += `${idx + 1}\t${item.nombre}\t${item.codigo}` + (mostrarPVP ? `\t$${item.pvp.toFixed(2)}\n` : `\n`);
+            });
+
+            if (mostrarPVP) {
+                texto += `\nTOTAL CONFIGURACIÓN: $${total.toFixed(2)}`;
+            }
+
+            navigator.clipboard.writeText(texto).then(() => {
+                alert("¡Configuración copiada al portapapeles! Puedes pegarla directamente en Word o Excel.");
+            });
+        }
+
+        window.onload = cargarComponentes;
     </script>
 </body>
 </html>
