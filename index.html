@@ -70,15 +70,16 @@
                     <input type="text" id="busquedaInput" oninput="filtrarComponentes()" placeholder="🔍 Buscar por nombre o código" class="w-full p-2 text-sm border border-slate-200 rounded-lg focus:ring-2 focus:ring-blue-500">
                 </div>
 
-            <div class="flex justify-between items-center mb-2">
-                <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">2. Seleccionar Opciones / Sondas</label>
-                <div class="flex items-center space-x-2">
-                    <button onclick="limpiarSeleccion()" class="text-[11px] text-red-600 hover:text-red-700 font-semibold bg-red-50 hover:bg-red-100 px-2 py-0.5 rounded transition-all">
-                        🗑️ Limpiar
-                    </button>
-                    <span id="contadorItems" class="text-xs text-slate-400">0 disponibles</span>
-                </div>
-            </div>
+                <div class="flex-1 flex flex-col min-h-0">
+                    <div class="flex justify-between items-center mb-2">
+                        <label class="text-xs font-bold text-slate-500 uppercase tracking-wider">2. Seleccionar Opciones / Sondas</label>
+                        <div class="flex items-center space-x-2">
+                            <button onclick="limpiarSeleccion()" class="text-[11px] text-red-600 hover:text-red-700 font-semibold bg-red-50 hover:bg-red-100 px-2 py-0.5 rounded transition-all">
+                                🗑️ Limpiar
+                            </button>
+                            <span id="contadorItems" class="text-xs text-slate-400">0 disponibles</span>
+                        </div>
+                    </div>
                     
                     <div id="listaCheckboxes" class="space-y-2 flex-1 overflow-y-auto pr-1 border border-slate-100 p-2 rounded-xl bg-slate-50">
                         <!-- Checkboxes dinámicos -->
@@ -140,24 +141,23 @@
     </div>
 
     <script>
-
         function limpiarSeleccion() {
-            seleccionados = []; // Vacía el array de seleccionados
-            renderTabla();      // Actualiza la tabla (quedará en 0)
-            renderListaCheckboxes(); // Actualiza los checkboxes visualmente
+            seleccionados = [];
+            renderTabla();
+            renderListaCheckboxes();
         }
-        // Enlaces directos a tus archivos PDF en GitHub (reemplaza .docx por .pdf en los nombres)
+
         const documentosPDF = {
-                    "Arietta 50": "https://fsbastidas.github.io/ULTRASOUND-FJ/Cotización ARIETTA 50.pdf#toolbar=0&view=FitH",
-                    "Arietta 50 LE": "https://fsbastidas.github.io/ULTRASOUND-FJ/Cotización ARIETTA 50 LE.pdf#toolbar=0&view=FitH",
-                    "Arietta 65": "https://fsbastidas.github.io/ULTRASOUND-FJ/Cotización ARIETTA 65.pdf#toolbar=0&view=FitH",
-                    "Arietta 650 DI": "https://fsbastidas.github.io/ULTRASOUND-FJ/Cotización ARIETTA 650 DI.pdf#toolbar=0&view=FitH",
-                    "Arietta 750 SE": "https://fsbastidas.github.io/ULTRASOUND-FJ/Cotización ARIETTA 750 SE.pdf#toolbar=0&view=FitH",
-                    "Arietta 750 DI": "https://fsbastidas.github.io/ULTRASOUND-FJ/Cotización ARIETTA 750 DI.pdf#toolbar=0&view=FitH",
-                    "Arietta 850": "https://fsbastidas.github.io/ULTRASOUND-FJ/Cotización ARIETTA 850.pdf#toolbar=0&view=FitH",
-                    "Arietta 850 DI": "https://fsbastidas.github.io/ULTRASOUND-FJ/Cotización ARIETTA 850 DI.pdf#toolbar=0&view=FitH",
-                    "Lisendo 880": "https://fsbastidas.github.io/ULTRASOUND-FJ/Cotización LISENDO 880.pdf#toolbar=0&view=FitH"
-                };
+            "Arietta 50": "https://fsbastidas.github.io/ULTRASOUND-FJ/Cotización ARIETTA 50.pdf#toolbar=0&view=FitH",
+            "Arietta 50 LE": "https://fsbastidas.github.io/ULTRASOUND-FJ/Cotización ARIETTA 50 LE.pdf#toolbar=0&view=FitH",
+            "Arietta 65": "https://fsbastidas.github.io/ULTRASOUND-FJ/Cotización ARIETTA 65.pdf#toolbar=0&view=FitH",
+            "Arietta 650 DI": "https://fsbastidas.github.io/ULTRASOUND-FJ/Cotización ARIETTA 650 DI.pdf#toolbar=0&view=FitH",
+            "Arietta 750 SE": "https://fsbastidas.github.io/ULTRASOUND-FJ/Cotización ARIETTA 750 SE.pdf#toolbar=0&view=FitH",
+            "Arietta 750 DI": "https://fsbastidas.github.io/ULTRASOUND-FJ/Cotización ARIETTA 750 DI.pdf#toolbar=0&view=FitH",
+            "Arietta 850": "https://fsbastidas.github.io/ULTRASOUND-FJ/Cotización ARIETTA 850.pdf#toolbar=0&view=FitH",
+            "Arietta 850 DI": "https://fsbastidas.github.io/ULTRASOUND-FJ/Cotización ARIETTA 850 DI.pdf#toolbar=0&view=FitH",
+            "Lisendo 880": "https://fsbastidas.github.io/ULTRASOUND-FJ/Cotización LISENDO 880.pdf#toolbar=0&view=FitH"
+        };
         
         const baseDeDatos = {
             "Arietta 50": [
@@ -215,7 +215,6 @@
             document.getElementById("subtituloModelo").textContent = "Modelo: " + modelo;
             document.getElementById("tituloDocActual").textContent = modelo;
             
-            // Cargar el PDF correspondiente
             const visor = document.getElementById("pdfViewer");
             visor.src = documentosPDF[modelo] || documentosPDF["Arietta 50"];
 
@@ -322,52 +321,51 @@
         }
 
         function exportarExcel() {
-                    const modelo = document.getElementById("selectModelo").value;
-                    const mostrarPVP = document.getElementById("togglePVP").checked;
-                    const todosLosItems = baseDeDatos[modelo] || [];
-                    const items = todosLosItems.filter(i => seleccionados.includes(i.id));
-        
-                    if (items.length === 0) {
-                        alert("Selecciona al menos un ítem antes de exportar.");
-                        return;
-                    }
-        
-                    // Crear filas con columnas estrictamente separadas
-                    const rows = items.map((item, idx) => {
-                        let rowData = {
-                            "Item": idx + 1,
-                            "Descripción": item.nombre,
-                            "Código": item.codigo
-                        };
-                        if (mostrarPVP) rowData["PVP ($)"] = item.pvp;
-                        return rowData;
-                    });
-        
-                    if (mostrarPVP) {
-                        const total = items.reduce((acc, curr) => acc + curr.pvp, 0);
-                        rows.push({
-                            "Item": "",
-                            "Descripción": "TOTAL DE LA CONFIGURACIÓN",
-                            "Código": "",
-                            "PVP ($)": total
-                        });
-                    }
-        
-                    const worksheet = XLSX.utils.json_to_sheet(rows);
-        
-                    // Ajustar automáticamente el ancho de las columnas para que no se encimen los textos
-                    const colWidths = [
-                        { wch: 6 },  // Item
-                        { wch: 45 }, // Descripción (más ancho para los nombres largos)
-                        { wch: 20 }, // Código
-                        { wch: 15 }  // PVP
-                    ];
-                    worksheet['!cols'] = colWidths;
-        
-                    const workbook = XLSX.utils.book_new();
-                    XLSX.utils.book_append_sheet(workbook, worksheet, "Configuracion");
-                    XLSX.writeFile(workbook, `Configuracion_${modelo.replace(/[^a-zA-Z0-9]/g, "_")}.xlsx`);
-                }
+            const modelo = document.getElementById("selectModelo").value;
+            const mostrarPVP = document.getElementById("togglePVP").checked;
+            const todosLosItems = baseDeDatos[modelo] || [];
+            const items = todosLosItems.filter(i => seleccionados.includes(i.id));
+
+            if (items.length === 0) {
+                alert("Selecciona al menos un ítem antes de exportar.");
+                return;
+            }
+
+            const rows = items.map((item, idx) => {
+                let rowData = {
+                    "Item": idx + 1,
+                    "Descripción": item.nombre,
+                    "Código": item.codigo
+                };
+                if (mostrarPVP) rowData["PVP ($)"] = item.pvp;
+                return rowData;
+            });
+
+            if (mostrarPVP) {
+                const total = items.reduce((acc, curr) => acc + curr.pvp, 0);
+                rows.push({
+                    "Item": "",
+                    "Descripción": "TOTAL DE LA CONFIGURACIÓN",
+                    "Código": "",
+                    "PVP ($)": total
+                });
+            }
+
+            const worksheet = XLSX.utils.json_to_sheet(rows);
+
+            const colWidths = [
+                { wch: 6 }, 
+                { wch: 45 }, 
+                { wch: 20 }, 
+                { wch: 15 }  
+            ];
+            worksheet['!cols'] = colWidths;
+
+            const workbook = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(workbook, worksheet, "Configuracion");
+            XLSX.writeFile(workbook, `Configuracion_${modelo.replace(/[^a-zA-Z0-9]/g, "_")}.xlsx`);
+        }
+
         function copiarTabla() {
             const modelo = document.getElementById("selectModelo").value;
             const mostrarPVP = document.getElementById("togglePVP").checked;
