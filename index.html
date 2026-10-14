@@ -312,42 +312,52 @@
         }
 
         function exportarExcel() {
-            const modelo = document.getElementById("selectModelo").value;
-            const mostrarPVP = document.getElementById("togglePVP").checked;
-            const todosLosItems = baseDeDatos[modelo] || [];
-            const items = todosLosItems.filter(i => seleccionados.includes(i.id));
-
-            if (items.length === 0) {
-                alert("Selecciona al menos un ítem antes de exportar.");
-                return;
-            }
-
-            const rows = items.map((item, idx) => {
-                let rowData = {
-                    "Item": idx + 1,
-                    "Descripción / Aplicación": item.nombre,
-                    "Modelo / Código": item.codigo
-                };
-                if (mostrarPVP) rowData["PVP ($)"] = item.pvp;
-                return rowData;
-            });
-
-            if (mostrarPVP) {
-                const total = items.reduce((acc, curr) => acc + curr.pvp, 0);
-                rows.push({
-                    "Item": "",
-                    "Descripción / Aplicación": "TOTAL DE LA CONFIGURACIÓN",
-                    "Modelo / Código": "",
-                    "PVP ($)": total
-                });
-            }
-
-            const worksheet = XLSX.utils.json_to_sheet(rows);
-            const workbook = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(workbook, worksheet, "Configuracion");
-            XLSX.writeFile(workbook, `Configuracion_${modelo.replace(/[^a-zA-Z0-9]/g, "_")}.xlsx`);
-        }
-
+                    const modelo = document.getElementById("selectModelo").value;
+                    const mostrarPVP = document.getElementById("togglePVP").checked;
+                    const todosLosItems = baseDeDatos[modelo] || [];
+                    const items = todosLosItems.filter(i => seleccionados.includes(i.id));
+        
+                    if (items.length === 0) {
+                        alert("Selecciona al menos un ítem antes de exportar.");
+                        return;
+                    }
+        
+                    // Crear filas con columnas estrictamente separadas
+                    const rows = items.map((item, idx) => {
+                        let rowData = {
+                            "Item": idx + 1,
+                            "Descripción": item.nombre,
+                            "Código": item.codigo
+                        };
+                        if (mostrarPVP) rowData["PVP ($)"] = item.pvp;
+                        return rowData;
+                    });
+        
+                    if (mostrarPVP) {
+                        const total = items.reduce((acc, curr) => acc + curr.pvp, 0);
+                        rows.push({
+                            "Item": "",
+                            "Descripción": "TOTAL DE LA CONFIGURACIÓN",
+                            "Código": "",
+                            "PVP ($)": total
+                        });
+                    }
+        
+                    const worksheet = XLSX.utils.json_to_sheet(rows);
+        
+                    // Ajustar automáticamente el ancho de las columnas para que no se encimen los textos
+                    const colWidths = [
+                        { wch: 6 },  // Item
+                        { wch: 45 }, // Descripción (más ancho para los nombres largos)
+                        { wch: 20 }, // Código
+                        { wch: 15 }  // PVP
+                    ];
+                    worksheet['!cols'] = colWidths;
+        
+                    const workbook = XLSX.utils.book_new();
+                    XLSX.utils.book_append_sheet(workbook, worksheet, "Configuracion");
+                    XLSX.writeFile(workbook, `Configuracion_${modelo.replace(/[^a-zA-Z0-9]/g, "_")}.xlsx`);
+                }
         function copiarTabla() {
             const modelo = document.getElementById("selectModelo").value;
             const mostrarPVP = document.getElementById("togglePVP").checked;
