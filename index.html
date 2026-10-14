@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -161,12 +161,15 @@
         
         const baseDeDatos = {
             "Arietta 50": [
+                { id: "OPCIONALES"},
+                
+                { id: "SSD-ARIETTA50", nombre: "Ultrasound System, 3 Probe Connector, Fixed Monitor Arm", codigo: "SSD-ARIETTA50", pvp: 19130 },
                 { id: "PEU-ARIETTA50", nombre: "Physiological Signal Display Unit", codigo: "PEU-ARIETTA50", pvp: 1565 },
-                { id: "MP-FX-AR50-2", nombre: "Probe Holder Left Side Mounting Kit", codigo: "MP-FX-AR50-2", pvp: 20869 },
-                { id: "MP-2819", nombre: "Triple Foot Switch", codigo: "MP-2819", pvp: 2783 },
-                { id: "MP-FX-AR50-3", nombre: "Storage Tray", codigo: "MP-FX-AR50-3", pvp: 5739 },
-                { id: "MP-FX-ALB-6B", nombre: "Keyboard Tray", codigo: "MP-FX-ALB-6B", pvp: 6435 },
-                { id: "EU-9203", nombre: "Servo unit", codigo: "EU-9203", pvp: 2956 },
+                { id: "MP-FX-AR50-2", nombre: "Probe Holder Left Side Mounting Kit", codigo: "MP-FX-AR50-2", pvp: 522 },
+                { id: "MP-2819", nombre: "Triple Foot Switch", codigo: "MP-2819", pvp: 348 },
+                { id: "MP-FX-AR50-3", nombre: "Storage Tray", codigo: "MP-FX-AR50-3", pvp: 348 },
+                { id: "MP-FX-ALB-6B", nombre: "Keyboard Tray", codigo: "MP-FX-ALB-6B", pvp: 1043 },
+                { id: "EU-9203", nombre: "Servo unit", codigo: "EU-9203", pvp: 1391 },
                 { id: "EU-6065", nombre: "Battery unit", codigo: "EU-6065", pvp: 2608 },
                 { id: "MP-FX-AR50-4", nombre: "Friction Kit", codigo: "MP-FX-AR50-4", pvp: 522 },
                 { id: "PM-AR50-H001", nombre: "B/W Printer Connection Kit", codigo: "PM-AR50-H001", pvp: 348 },
@@ -176,7 +179,48 @@
                 { id: "SOP-AR50-10", nombre: "DICOM Network Communication Software", codigo: "SOP-AR50-10", pvp: 2956 },
                 { id: "SOP-AR50-21", nombre: "DICOM Structure Report Software", codigo: "SOP-AR50-21", pvp: 1391 },
                 { id: "SOP-AR50-59", nombre: "DICOM Query/Retrieve software", codigo: "SOP-AR50-59", pvp: 1391 },
-                { id: "SOP-AR50-7", nombre: "FLOW Profile Measurement software", codigo: "SOP-AR50-7", pvp: 522 }
+                { id: "SOP-AR50-7", nombre: "FLOW Profile Measurement software", codigo: "SOP-AR50-7", pvp: 522 },
+                { id: "SOP-AR50-38", nombre: "Automated IMT Measurement software", codigo: "SOP-AR50-38", pvp: 1391 },
+                { id: "SOP-AR50-4", nombre: "Real-time 3D", codigo: "SOP-AR50-4", pvp: 348 },
+                { id: "SOP-AR50-51", nombre: "4D Shading Software", codigo: "SOP-AR50-51", pvp: 1391 },
+                { id: "SOP-AR50-42", nombre: "Automated NT Measurement software", codigo: "SOP-AR50-42", pvp: 1391 },
+                { id: "SOP-AR50-44", nombre: "Contrast Harmonic Imaging software", codigo: "SOP-AR50-44", pvp: 2087 },
+                { id: "SOP-AR50-55", nombre: "CW Software", codigo: "SOP-AR50-55", pvp: 696 },
+                { id: "SOP-AR50-128", nombre: "McAfee Embedded Control software", codigo: "SOP-AR50-128", pvp: 696 },
+                
+                {nombre: "PAQUETE OPCIONAL PARA CONEXION DE IMPRESORA A COLOR SONY UP-D25MD"},
+                
+                { id: "EU-6060B", nombre: "AC Outlet Expansion", codigo: "EU-6060B", pvp: 870 },
+                { id: "PM-AR65-H002", nombre: "Digital color printer connection kit", codigo: "PM-AR65-H002", pvp: 348 },
+                { id: "MP-FX-AR50-30B", nombre: "Peripheral mounting rack", codigo: "MP-FX-AR50-30B", pvp: 522 },
+                { id: "MP-FX-ALB-31", nombre: "Mounting Bracket for Digital Color Printer UP-D25MD (SONY)", codigo: "MP-FX-ALB-31", pvp: 696 },
+                
+                {nombre: "Paquete opcional para conexión de impresora a color Mitsubishi CP30DW"},
+                
+                { id: "EU-6060B", nombre: "AC Outlet Expansion", codigo: "EU-6060B", pvp: 870 },
+                { id: "PM-AR65-H002", nombre: "Digital color printer connection kit", codigo: "PM-AR65-H002", pvp: 348 },
+                { id: "MP-FX-AR50-30B", nombre: "Peripheral mounting rack", codigo: "MP-FX-AR50-30B", pvp: 522 },
+                { id: "MP-FX-ALB-32", nombre: "Mounting Bracket for Digital Color printer(Mitsubishi)", codigo: "MP-FX-ALB-32", pvp: 696 },
+                
+                {nombre: "Paquete opcional para conexión y montaje de calentador de gel integrado al equipo"},
+                
+                { id: "JW-3000U", nombre: "Jelly Warmer", codigo: "JW-3000U", pvp: 522 },
+                { id: "EU-6063", nombre: "AC adapter for Jelly warmer", codigo: "EU-6063", pvp: 522 },
+                { id: "MP-FX-AR50-5", nombre: "Jelly Warmer Power Mounting Kit", codigo: "MP-FX-AR50-5", pvp: 348 },
+                { id: "MP-FX-AVA-2B-R", nombre: "Jelly Warmer right mount kit", codigo: "MP-FX-AVA-2B-R", pvp: 348 },
+
+                {nombre: "Transductores y accesorios"},
+                
+                { id: "C251", nombre: "C251", codigo: "C251", pvp: 4000 },
+                { id: "C253", nombre: "C253", codigo: "C253", pvp: 2783 },
+                { id: "C253A", nombre: "C253A", codigo: "C253A", pvp: 2783 },
+                { id: "C35", nombre: "C35", codigo: "C35", pvp: 4348 },
+                { id: "C421", nombre: "C421", codigo: "C421", pvp: 6435 },
+                { id: "C41V", nombre: "C41V", codigo: "C41V", pvp: 6435 },
+                { id: "C41V1", nombre: "C41V1", codigo: "C41V1", pvp: 6435 },
+                { id: "C41B", nombre: "C41B", codigo: "C41B", pvp: 5565 },
+                { id: "C41RP", nombre: "C41RP", codigo: "C41RP", pvp: 8000 }
+
             ],
             "Arietta 50 LE": [
                 { id: "SSD-ARIETTA50LE", nombre: "Ultrasound System, 4 Probe Connector, Flexible Monitor Arm", codigo: "SSD-ARIETTA50LE", pvp: 20869 },
