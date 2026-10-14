@@ -210,7 +210,7 @@
             visor.src = documentosPDF[modelo] || documentosPDF["Arietta 50"];
 
             const items = baseDeDatos[modelo] || [];
-            seleccionados = items.slice(0, 3).map(i => i.id);
+            seleccionados = [];
 
             renderListaCheckboxes();
             renderTabla();
