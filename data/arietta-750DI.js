@@ -145,5 +145,5 @@ const datosArietta750DI = [
             { id: "EZU-TEAFC1", nombre: "Elastography coupler attachment for L55", codigo: "EZU-TEAFC1", pvp: 348 },
             { id: "EZU-TEDPL1", nombre: "Elastography coupler for L64 (10pcs/set, disposal)", codigo: "EZU-TEDPL1", pvp: 878 }
         ]
-    }
+    },
 ];
