@@ -9,6 +9,17 @@
     <!-- Librería para exportar a Excel real (.xlsx) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 
+    <!-- Sistema de Autenticación por Contraseña -->
+    <script>
+        const claveSecreta = "perfetech2026"; // Puedes cambiar tu contraseña aquí
+        let password = prompt("Ingrese la contraseña de acceso al Configurador:");
+        if (password !== claveSecreta) {
+            alert("Contraseña incorrecta. Acceso denegado.");
+            document.documentElement.innerHTML = "<body style='background:#f1f5f9; display:flex; justify-content:center; align-items:center; height:100vh; font-family:sans-serif;'><div style='background:white; padding:30px; border-radius:12px; box-shadow:0 4px 6px -1px rgb(0 0 0 / 0.1); text-align:center;'><h2 style='color:#ef4444; margin-bottom:10px;'>Acceso Restringido</h2><p style='color:#64748b; font-size:14px;'>Debe recargar la página e ingresar la contraseña correcta para ver el contenido.</p></div></body>";
+            throw new Error("Acceso denegado");
+        }
+    </script>
+
     <!-- Importación de los archivos de datos externos -->
     <script src="data/arietta-50.js"></script>
     <script src="data/arietta-50-le.js"></script>
