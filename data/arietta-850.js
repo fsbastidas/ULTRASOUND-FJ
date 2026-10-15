@@ -1,4 +1,4 @@
-const datosArietta850 = [
+const datosArietta850/DI = [
     {
         seccion: "COMPONENTES ESTÁNDAR",
         items: [
