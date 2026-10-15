@@ -16,6 +16,9 @@
     <script src="data/arietta-750-se.js"></script>
     <script src="data/arietta-850.js"></script>
     <script src="data/lisendo-880.js"></script>
+    <script src="data/arietta-650DI.js"></script>
+    <script src="data/arietta-750DI.js"></script>
+    <script src="data/arietta-850DI.js"></script>
 </head>
 <body class="bg-slate-100 min-h-screen p-3 md:p-6 font-sans">
 
@@ -175,12 +178,10 @@
             "Arietta 750 SE": datosArietta750SE,
             "Arietta 850": datosArietta850,
             "Lisendo 880": datosLisendo880
+            "Arietta 650 DI": datosArietta650SDI,
+            "Arietta 750 DI": datosArietta750DI,
+            "Arietta 850 DI": datosArietta850DI,
         };
-
-        // Copiar modelos espejo (DI)
-        ["Arietta 650 DI", "Arietta 750 DI", "Arietta 850 DI"].forEach(m => {
-            baseDeDatos[m] = baseDeDatos["Arietta 50"];
-        });
 
         let seleccionados = [];
 
