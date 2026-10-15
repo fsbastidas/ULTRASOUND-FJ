@@ -132,5 +132,5 @@ const datosArietta750SE = [
             { id: "EZU-PA7L3", nombre: "EZU-PA7L3 - Soporte de guía de aguja para transductor L64", codigo: "EZU-PA7L3", pvp: 1565 },
             { id: "BA-001", nombre: "BA-001 - Adaptador de punción para transductor CL4416R1", codigo: "BA-001", pvp: 1391 }
         ]
-    },
+    }
 ];
